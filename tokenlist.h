@@ -9,14 +9,12 @@ class TokenList
 {
 public:
     TokenList();
-    void add(Token& token);
-    void del(int index);
-    Token get(int index);
+    void append(Token& token);//添加元素
+    void remove(int index);//删除元素
+    Token& operator[](int index);
+    int size();
 private:
     QVector<Token> tokenList;
-
-signals:
-
 };
 
 #endif // TOKENLIST_H
