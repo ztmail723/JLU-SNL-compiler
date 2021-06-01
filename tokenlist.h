@@ -5,12 +5,13 @@
 #include <QVector>
 #include "token.h"
 
-class TokenList : public QObject
+class TokenList
 {
-    Q_OBJECT
 public:
-    explicit TokenList(QObject* parent = nullptr);
-
+    TokenList();
+    void add(Token& token);
+    void del(int index);
+    Token get(int index);
 private:
     QVector<Token> tokenList;
 

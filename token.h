@@ -1,16 +1,11 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include <QObject>
 
-class Token : public QObject
+class Token
 {
-    Q_OBJECT
 public:
-    explicit Token(QObject *parent = nullptr);
-
-signals:
-
+    Token();
 };
 
 #endif // TOKEN_H

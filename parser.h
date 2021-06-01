@@ -3,11 +3,10 @@
 
 #include <QObject>
 #include "tokenlist.h"
-class Parser : public QObject
+class Parser
 {
-    Q_OBJECT
 public:
-    explicit Parser(QObject* parent = nullptr);
+    Parser();
     TokenList run(QString code);
 signals:
 
