@@ -2,10 +2,10 @@
 #define LEXER_H
 #include "tokenlist.h"
 
-class Lexer
-{
+class Lexer {
 public:
     Lexer();
+    virtual ~Lexer() = default;
     virtual TokenList run(QString str) = 0;
 };
 

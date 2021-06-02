@@ -1,13 +1,13 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <QObject>
-#include "tokenlist.h"
 #include "syntaxtree.h"
-class Parser
-{
+#include "tokenlist.h"
+#include <QObject>
+class Parser {
 public:
     Parser();
+    virtual ~Parser() = default;
     virtual SyntaxTree run(TokenList tokenList) = 0;
 };
 

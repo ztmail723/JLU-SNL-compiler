@@ -3,11 +3,10 @@
 
 #include "parser.h"
 
-class ParserLL1 : public Parser
-{
+class ParserLL1 : public Parser {
 public:
     ParserLL1();
-    virtual SyntaxTree run(TokenList tokenList);
+    virtual SyntaxTree run(TokenList tokenList) override;
 };
 
 #endif // PARSERLL1_H
