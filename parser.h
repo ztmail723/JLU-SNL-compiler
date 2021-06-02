@@ -7,9 +7,7 @@ class Parser
 {
 public:
     Parser();
-    TokenList run(QString code);
-signals:
-
+    virtual TokenList run(TokenList tokenList) = 0;
 };
 
 #endif // PARSER_H
