@@ -14,6 +14,9 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     parser.cpp \
+    parserll1.cpp \
+    parserrecursivedescent.cpp \
+    syntaxtree.cpp \
     token.cpp \
     tokenlist.cpp
 
@@ -22,6 +25,9 @@ HEADERS += \
     lexerimp.h \
     mainwindow.h \
     parser.h \
+    parserll1.h \
+    parserrecursivedescent.h \
+    syntaxtree.h \
     token.h \
     tokenlist.h
 
