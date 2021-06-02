@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     lexer.cpp \
+    lexerimp.cpp \
     main.cpp \
     mainwindow.cpp \
     parser.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     lexer.h \
+    lexerimp.h \
     mainwindow.h \
     parser.h \
     token.h \
