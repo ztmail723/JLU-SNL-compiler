@@ -28,6 +28,12 @@ class Token
 {
 public:
     Token();
+    void setLineShow(int lineShow);
+    int& getLineShow();
+    void setLexType(LexType lexType);
+    LexType& getLexType();
+    void setSem(QString sem);
+    QString& getSem();
 
 private:
     int lineShow; //记录该单词在源程序中的行数
