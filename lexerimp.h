@@ -7,7 +7,7 @@ class LexerImp : public Lexer
 {
 public:
     LexerImp();
-    virtual TokenList run(QString str);
+    virtual TokenList run(QString str) override;
 };
 
 #endif // LEXERIMP_H

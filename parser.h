@@ -8,6 +8,7 @@ class Parser
 {
 public:
     Parser();
+    virtual ~Parser() = default;
     virtual SyntaxTree run(TokenList tokenList) = 0;
 };
 

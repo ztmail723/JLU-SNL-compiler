@@ -8,7 +8,7 @@ class ParserRecursiveDescent : public Parser
 {
 public:
     ParserRecursiveDescent();
-    virtual SyntaxTree run(TokenList tokenList);
+    virtual SyntaxTree run(TokenList tokenList) override;
 };
 
 #endif // PARSERRECURSIVEDESCENT_H
