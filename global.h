@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
-
+#include <QMap>
+#include <QString>
 enum class LexType {
     /* 簿记单词符号 */
     ENDFILE,
@@ -19,22 +20,22 @@ enum class LexType {
     DO,
     ENDWH,
     BEGIN,
-    END1,
+    END,
     READ,
     WRITE,
     ARRAY,
     OF,
     RECORD,
-    RETURN1,
+    RETURN,
 
     /* 类型 */
-    INTEGER,
-    CHAR1,
+    INTEGER_T,
+    CHAR_T,
 
     /* 多字符单词符号 */
     ID,
-    INTC,
-    CHARC,
+    INTC_VAL,
+    CHARC_VAL,
 
     /* 特殊符号 */
     ASSIGN,
@@ -43,7 +44,7 @@ enum class LexType {
     PLUS,
     MINUS,
     TIMES,
-    OVER,
+    DIVIDE,
     LPAREN,
     RPAREN,
     DOT,
@@ -179,4 +180,11 @@ enum class ExpType {
 };
 
 struct Symbtable;
+
+namespace ConstantVar {
+extern QMap<LexType, QString> lexName;
+extern QMap<QString, LexType> reservedWords;
+extern QMap<char, LexType> opWords;
+}
+
 #endif // GLOBAL_H
