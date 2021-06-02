@@ -21,6 +21,7 @@ SOURCES += \
     tokenlist.cpp
 
 HEADERS += \
+    global.h \
     lexer.h \
     lexerimp.h \
     mainwindow.h \
