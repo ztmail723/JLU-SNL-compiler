@@ -20,7 +20,8 @@ QMap<LexType, QString> ConstantVar::lexName = { { LexType::PROGRAM, "PROGRAM" },
     { LexType::SEMI, ";" }, { LexType::COMMA, "," },
     { LexType::LMIDPAREN, "[" }, { LexType::RMIDPAREN, "]" },
     { LexType::UNDERANGE, ".." }, { LexType::ENDFILE, "EOF" },
-    { LexType::ERROR, "ERROR" } };
+    { LexType::ERROR, "ERROR" }
+};
 QMap<QString, LexType> ConstantVar::reservedWords = { { "program", LexType::PROGRAM },
     { "type", LexType::TYPE },
     { "var", LexType::VAR },
@@ -41,9 +42,21 @@ QMap<QString, LexType> ConstantVar::reservedWords = { { "program", LexType::PROG
     { "read", LexType::READ },
     { "write", LexType::WRITE },
     { "return", LexType::RETURN },
-    { "integer", LexType::INTEGER_T } };
+    { "integer", LexType::INTEGER_T }
+};
 QMap<char, LexType> ConstantVar::opWords = { { '+', LexType::PLUS }, { '-', LexType::MINUS }, { '*', LexType::TIMES },
     { '/', LexType::DIVIDE }, { '(', LexType::LPAREN }, { ')', LexType::RPAREN },
     { ';', LexType::SEMI }, { '[', LexType::LMIDPAREN }, { ']', LexType::RMIDPAREN },
     { '=', LexType::EQ }, { '<', LexType::LT }, { ',', LexType::COMMA },
-    { EOF, LexType::ENDFILE } };
+    { EOF, LexType::ENDFILE }
+};
+QMap<NodeKind, QString> ConstantVar::nodekindName = {{NodeKind::ProK, "ProK"},
+    {NodeKind::PheadK, "PheadK"},
+    {NodeKind::TypeK, "TypeK"},
+    {NodeKind::VarK, "VarK"},
+    {NodeKind::ProcDecK, "ProcDecK"},
+    {NodeKind::StmLK, "StmLK"},
+    {NodeKind::DecK, "DecK"},
+    {NodeKind::StmtK, "StmtK"},
+    {NodeKind::ExpK, "ExpK"}
+};
