@@ -105,4 +105,20 @@ void MainWindow::printLexer() // 显示词法分析的结果
 void MainWindow::printParser() // 显示语法分析的结果
 {
     ui->treeWidget->clear();
+    TreeNode* root = this->syntaxTree->getRoot();
+    QTreeWidgetItem* topItem = new QTreeWidgetItem(ui->treeWidget);
+    for (auto i : root->child)
+    {
+        this->preOrder(i, topItem);
+    }
+    //topItem->setText(0,)
+}
+
+void MainWindow::preOrder(TreeNode* node, QTreeWidgetItem* parentItem)
+{
+    QTreeWidgetItem* nowItem = new QTreeWidgetItem(parentItem);
+    for (auto i : node->child)
+    {
+        this->preOrder(i, nowItem);
+    }
 }
