@@ -107,16 +107,19 @@ void MainWindow::printParser() // 显示语法分析的结果
     ui->treeWidget->clear();
     TreeNode* root = this->syntaxTree->getRoot();
     QTreeWidgetItem* topItem = new QTreeWidgetItem(ui->treeWidget);
+    QString str = ConstantVar::nodekindName[root->nodekind];
+    topItem->setText(0, str);
     for (auto i : root->child)
     {
         this->preOrder(i, topItem);
     }
-    //topItem->setText(0,)
 }
 
 void MainWindow::preOrder(TreeNode* node, QTreeWidgetItem* parentItem)
 {
     QTreeWidgetItem* nowItem = new QTreeWidgetItem(parentItem);
+    QString str = ConstantVar::nodekindName[node->nodekind];
+    nowItem->setText(0, str);
     for (auto i : node->child)
     {
         this->preOrder(i, nowItem);
