@@ -5,9 +5,9 @@ LexerImp::LexerImp()
 
 }
 
-TokenList LexerImp::run(QString str)
+TokenList* LexerImp::run(QString str)
 {
-    TokenList tokenList;
+    TokenList* tokenList = new TokenList();
     /* 在下边实现 */
 
 

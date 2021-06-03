@@ -4,11 +4,12 @@
 #include "syntaxtree.h"
 #include "tokenlist.h"
 #include <QObject>
-class Parser {
+class Parser
+{
 public:
     Parser();
     virtual ~Parser() = default;
-    virtual SyntaxTree run(TokenList tokenList) = 0;
+    virtual SyntaxTree* run(TokenList tokenList) = 0;
 };
 
 #endif // PARSER_H

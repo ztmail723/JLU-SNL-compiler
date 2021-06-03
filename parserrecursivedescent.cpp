@@ -5,8 +5,8 @@ ParserRecursiveDescent::ParserRecursiveDescent()
 
 }
 
-SyntaxTree ParserRecursiveDescent::run(TokenList tokenList)
+SyntaxTree* ParserRecursiveDescent::run(TokenList tokenList)
 {
-    SyntaxTree syntaxTree;
+    SyntaxTree* syntaxTree = new SyntaxTree();
     return syntaxTree;
 }

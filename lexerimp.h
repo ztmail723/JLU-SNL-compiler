@@ -3,10 +3,11 @@
 
 #include "lexer.h"
 
-class LexerImp : public Lexer {
+class LexerImp : public Lexer
+{
 public:
     LexerImp();
-    virtual TokenList run(QString str) override;
+    virtual TokenList* run(QString str) override;
 };
 
 #endif // LEXERIMP_H

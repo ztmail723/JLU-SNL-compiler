@@ -5,8 +5,8 @@ ParserLL1::ParserLL1()
 
 }
 
-SyntaxTree ParserLL1::run(TokenList tokenList)
+SyntaxTree* ParserLL1::run(TokenList tokenList)
 {
-    SyntaxTree syntaxTree;
+    SyntaxTree* syntaxTree = new SyntaxTree();
     return syntaxTree;
 }
