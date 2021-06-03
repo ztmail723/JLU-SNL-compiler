@@ -4,7 +4,8 @@
 #include "token.h"
 #include <QVector>
 
-class TreeNode {
+class TreeNode
+{
 public:
     QVector<TreeNode*> child; // 指向子语法树结点指针
     TreeNode* sibling; // 指向兄弟语法树结点指针
@@ -39,11 +40,18 @@ public:
             ExpType type; // 记录语法树结点的检查类型，取值Void, Integer, Boolean, 为类型检查ExpType类型
         } ExpAttr; // 记录表达式的属性
     } attr;
+    ~TreeNode();
 };
 
-class SyntaxTree {
+class SyntaxTree
+{
 public:
     SyntaxTree();
+    ~SyntaxTree();
+    void setRoot(TreeNode* node);
+    TreeNode* getRoot();
+private:
+    TreeNode* root;
 };
 
 #endif // SYNTAXTREE_H
