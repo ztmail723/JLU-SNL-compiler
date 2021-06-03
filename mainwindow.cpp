@@ -60,6 +60,7 @@ void MainWindow::on_pushButton_2_clicked() // 进行词法分析
     }
     this->tokenList = lexer->run(ui->textEdit->toPlainText());
     delete lexer;
+    this->printLexer(); // 显示词法分析的结果
 }
 
 void MainWindow::on_pushButton_3_clicked() // 进行语法分析
@@ -85,4 +86,15 @@ void MainWindow::on_pushButton_3_clicked() // 进行语法分析
         this->syntaxTree = nullptr;
     }
     this->syntaxTree = parser->run(*this->tokenList);
+    this->printParser(); // 显示语法分析的结果
+}
+
+void MainWindow::printLexer() // 显示词法分析的结果
+{
+
+}
+
+void MainWindow::printParser() // 显示语法分析的结果
+{
+
 }

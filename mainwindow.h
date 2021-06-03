@@ -23,6 +23,8 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void printLexer();
+    void printParser();
 private:
     Ui::MainWindow* ui;
     TokenList* tokenList;
