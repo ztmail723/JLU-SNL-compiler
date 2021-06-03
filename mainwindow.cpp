@@ -91,10 +91,18 @@ void MainWindow::on_pushButton_3_clicked() // 进行语法分析
 
 void MainWindow::printLexer() // 显示词法分析的结果
 {
-
+    ui->listWidget->clear();
+    int tokenSize = this->tokenList->size();
+    for (int i = 0; i < tokenSize; i++)
+    {
+        QString lineStr = "Line " + QString::number((*this->tokenList)[i].getLineShow());
+        QString lexStr = ConstantVar::lexName[(*this->tokenList)[i].getLexType()];
+        QString semStr = (*this->tokenList)[i].getSem();
+        ui->listWidget->addItem(lineStr + " " + lexStr + " " + semStr);
+    }
 }
 
 void MainWindow::printParser() // 显示语法分析的结果
 {
-
+    ui->treeWidget->clear();
 }
