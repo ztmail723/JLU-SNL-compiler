@@ -23,6 +23,11 @@ private:
     bool getExpResult = true;
     int expflag = 0;
     int getExpResult2 = false;
+    static int nowLine;
+public:
+    static TreeNode* newSpecNode(NodeKind kind);
+    static TreeNode* newStmtNode(StmtKind kind);
+    static TreeNode* newExpNode(ExpKind kind);
 private:
     int getPriosity(LexType op);
     void process(int id);
