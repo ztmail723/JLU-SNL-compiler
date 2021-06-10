@@ -256,5 +256,34 @@ ParserLL1::ParserLL1()
 SyntaxTree* ParserLL1::run(TokenList tokenList)
 {
     SyntaxTree* syntaxTree = new SyntaxTree();
+    syntaxTree->setRoot(TreeNode::newSpecNode(NodeKind::ProK));
+    symbal_stack.push(LexType::Program);
+
+
+
     return syntaxTree;
+}
+
+int ParserLL1::getPriosity(LexType op)
+{
+    int pri = 0;
+    switch (op)
+    {
+    case LexType::END:
+        pri = -1; break;//栈底标识，优先级最低
+    case LexType::LPAREN:
+        pri = 0;
+    case LexType::LT:
+    case LexType::EQ:
+        pri = 1; break;
+    case LexType::PLUS:
+    case LexType::MINUS:
+        pri = 2; break;
+    case LexType::TIMES:
+    case LexType::DIVIDE:
+        pri = 3; break;
+    default:
+        pri = -1;
+    }
+    return  pri;
 }

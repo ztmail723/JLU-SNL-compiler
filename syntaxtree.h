@@ -41,6 +41,8 @@ public:
         } ExpAttr; // 记录表达式的属性
     } attr;
     ~TreeNode();
+public:
+    static TreeNode* newSpecNode(NodeKind kind);
 };
 
 class SyntaxTree
