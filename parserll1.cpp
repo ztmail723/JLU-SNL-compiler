@@ -2,7 +2,8 @@
 
 ParserLL1::ParserLL1()
 {
-    this->table = {
+    this->table =
+    {
         { { LexType::Program, LexType::PROGRAM }, 1 },
         { { LexType::ProgramHead, LexType::PROGRAM }, 2 },
         { { LexType::ProgramName, LexType::ID }, 3 },
@@ -267,7 +268,8 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
 int ParserLL1::getPriosity(LexType op)
 {
     int pri = 0;
-    switch (op) {
+    switch (op)
+    {
     case LexType::END:
         pri = -1;
         break; //栈底标识，优先级最低
@@ -293,15 +295,18 @@ int ParserLL1::getPriosity(LexType op)
 
 void ParserLL1::process(int id)
 {
-    switch (id) {
-    case 1: {
+    switch (id)
+    {
+    case 1:
+    {
         symbal_stack.push(LexType::DOT);
         symbal_stack.push(LexType::ProgramBody);
         symbal_stack.push(LexType::DeclarePart);
         symbal_stack.push(LexType::ProgramHead);
         break;
     }
-    case 2: {
+    case 2:
+    {
         symbal_stack.push(LexType::ProgramName);
         symbal_stack.push(LexType::PROGRAM);
         current_treenode = TreeNode::newSpecNode(NodeKind::PheadK);
@@ -309,26 +314,31 @@ void ParserLL1::process(int id)
         (*item) = current_treenode;
         break;
     }
-    case 3: {
+    case 3:
+    {
         symbal_stack.push(LexType::ID);
         current_treenode->name[0] = head->getSem();
         ++current_treenode->idnum;
         break;
     }
-    case 4: {
+    case 4:
+    {
         symbal_stack.push(LexType::ProcDec);
         symbal_stack.push(LexType::VarDec);
         symbal_stack.push(LexType::TypeDec);
         break;
     }
-    case 5: {
+    case 5:
+    {
         break;
     }
-    case 6: {
+    case 6:
+    {
         symbal_stack.push(LexType::TypeDeclaration);
         break;
     }
-    case 7: {
+    case 7:
+    {
         symbal_stack.push(LexType::TypeDecList);
         symbal_stack.push(LexType::TYPE);
 
@@ -341,7 +351,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 8: {
+    case 8:
+    {
 
         symbal_stack.push(LexType::TypeDecMore);
         symbal_stack.push(LexType::SEMI);
@@ -357,55 +368,66 @@ void ParserLL1::process(int id)
         syntaxtree_stack.push(&(current_treenode->sibling));
         break;
     }
-    case 9: {
+    case 9:
+    {
         syntaxtree_stack.pop();
         break;
     }
-    case 10: {
+    case 10:
+    {
         symbal_stack.push(LexType::TypeDecList);
         break;
     }
-    case 11: {
+    case 11:
+    {
         symbal_stack.push(LexType::ID);
         current_treenode->name[0] = head->getSem();
         current_treenode->idnum++;
         break;
     }
-    case 12: {
+    case 12:
+    {
         symbal_stack.push(LexType::BaseType);
         temp = &(current_treenode->kind.dec);
         break;
     }
-    case 13: {
+    case 13:
+    {
         symbal_stack.push(LexType::StructureType);
         break;
     }
-    case 14: {
+    case 14:
+    {
         symbal_stack.push(LexType::ID);
         current_treenode->kind.dec = DecKind::IdK;
         current_treenode->type_name = head->getSem();
         break;
     }
-    case 15: {
+    case 15:
+    {
         symbal_stack.push(LexType::INTEGER_T);
         (*temp) = DecKind::IntegerK;
         break;
     }
-    case 16: {
+    case 16:
+    {
         symbal_stack.push(LexType::CHAR_T);
         (*temp) = DecKind::CharK;
         break;
     }
-    case 17: {
+    case 17:
+    {
         symbal_stack.push(LexType::ArrayType);
 
         break;
     }
-    case 18: {
+    case 18:
+    {
         symbal_stack.push(LexType::RecType);
         break;
     }
-    case 19: {
+    case 19:
+    {
         symbal_stack.push(LexType::BaseType);
         symbal_stack.push(LexType::OF);
         symbal_stack.push(LexType::RMIDPAREN);
@@ -419,17 +441,20 @@ void ParserLL1::process(int id)
         temp = &current_treenode->attr.ArrayAttr.childtype;
         break;
     }
-    case 20: {
+    case 20:
+    {
         symbal_stack.push(LexType::INTC_VAL);
         current_treenode->attr.ArrayAttr.low = head->getSem().toInt();
         break;
     }
-    case 21: {
+    case 21:
+    {
         symbal_stack.push(LexType::INTC_VAL);
         current_treenode->attr.ArrayAttr.up = head->getSem().toInt();
         break;
     }
-    case 22: {
+    case 22:
+    {
         symbal_stack.push(LexType::END);
         symbal_stack.push(LexType::FieldDecList);
         symbal_stack.push(LexType::RECORD);
@@ -438,7 +463,8 @@ void ParserLL1::process(int id)
         syntaxtree_stack.push(&(current_treenode->child[0]));
         break;
     }
-    case 23: {
+    case 23:
+    {
         symbal_stack.push(LexType::FieldDecMore);
         symbal_stack.push(LexType::SEMI);
         symbal_stack.push(LexType::IdList);
@@ -450,7 +476,8 @@ void ParserLL1::process(int id)
         syntaxtree_stack.push(&current_treenode->sibling);
         break;
     }
-    case 24: {
+    case 24:
+    {
         symbal_stack.push(LexType::FieldDecMore);
         symbal_stack.push(LexType::SEMI);
         symbal_stack.push(LexType::IdList);
@@ -463,18 +490,21 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 25: {
+    case 25:
+    {
         /*后面没有记录类型的下一个域了，恢复当前纪录类型节点的指针*/
         syntaxtree_stack.pop();
         current_treenode = saveP;
         break;
     }
 
-    case 26: {
+    case 26:
+    {
         symbal_stack.push(LexType::FieldDecList);
         break;
     }
-    case 27: {
+    case 27:
+    {
         symbal_stack.push(LexType::IdMore);
         symbal_stack.push(LexType::ID);
 
@@ -483,26 +513,31 @@ void ParserLL1::process(int id)
         current_treenode->idnum++;
         break;
     }
-    case 28: {
+    case 28:
+    {
         break;
     }
 
-    case 29: {
+    case 29:
+    {
         symbal_stack.push(LexType::IdList);
         symbal_stack.push(LexType::COMMA);
 
         break;
     }
-    case 30: {
+    case 30:
+    {
         break;
     }
 
-    case 31: {
+    case 31:
+    {
         symbal_stack.push(LexType::VarDeclaration);
 
         break;
     }
-    case 32: {
+    case 32:
+    {
         symbal_stack.push(LexType::VarDecList);
         symbal_stack.push(LexType::VAR);
 
@@ -514,7 +549,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 33: {
+    case 33:
+    {
         symbal_stack.push(LexType::VarDecMore);
         symbal_stack.push(LexType::SEMI);
         symbal_stack.push(LexType::VarIdList);
@@ -527,16 +563,19 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 34: {
+    case 34:
+    {
         syntaxtree_stack.pop();
         break;
     }
 
-    case 35: {
+    case 35:
+    {
         symbal_stack.push(LexType::VarDecList);
         break;
     }
-    case 36: {
+    case 36:
+    {
         symbal_stack.push(LexType::VarIdMore);
         symbal_stack.push(LexType::ID);
 
@@ -544,26 +583,31 @@ void ParserLL1::process(int id)
         current_treenode->idnum++;
         break;
     }
-    case 37: {
+    case 37:
+    {
         break;
     }
 
-    case 38: {
+    case 38:
+    {
         symbal_stack.push(LexType::VarIdList);
         symbal_stack.push(LexType::COMMA);
 
         break;
     }
-    case 39: {
+    case 39:
+    {
         break;
     }
 
-    case 40: {
+    case 40:
+    {
         symbal_stack.push(LexType::ProcDeclaration);
 
         break;
     }
-    case 41: {
+    case 41:
+    {
         symbal_stack.push(LexType::ProcDecMore);
         symbal_stack.push(LexType::ProcBody);
         symbal_stack.push(LexType::ProcDecPart);
@@ -585,18 +629,21 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 42: {
+    case 42:
+    {
         /*弹出过程节点的兄弟节点指针*/
         //syntaxtree_stack.pop();  /*为了统一处理，不能现在弹出*/
         break;
     }
 
-    case 43: {
+    case 43:
+    {
         symbal_stack.push(LexType::ProcDeclaration);
         break;
     }
 
-    case 44: {
+    case 44:
+    {
         symbal_stack.push(LexType::ID);
 
         current_treenode->name[0] = head->getSem();
@@ -604,32 +651,38 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 45: {
+    case 45:
+    {
         /*形参部分为空，弹出指向形参的指针*/
         syntaxtree_stack.pop();
         break;
     }
 
-    case 46: {
+    case 46:
+    {
         symbal_stack.push(LexType::ParamDecList);
         break;
     }
-    case 47: {
+    case 47:
+    {
         symbal_stack.push(LexType::ParamMore);
         symbal_stack.push(LexType::Param);
         break;
     }
-    case 48: {
+    case 48:
+    {
         syntaxtree_stack.pop();
         break;
     }
 
-    case 49: {
+    case 49:
+    {
         symbal_stack.push(LexType::ParamDecList);
         symbal_stack.push(LexType::SEMI);
         break;
     }
-    case 50: {
+    case 50:
+    {
         symbal_stack.push(LexType::FormList);
         symbal_stack.push(LexType::TypeName);
 
@@ -642,7 +695,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 51: {
+    case 51:
+    {
         symbal_stack.push(LexType::FormList);
         symbal_stack.push(LexType::TypeName);
         symbal_stack.push(LexType::VAR);
@@ -656,7 +710,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 52: {
+    case 52:
+    {
         symbal_stack.push(LexType::FidMore);
         symbal_stack.push(LexType::ID);
 
@@ -665,26 +720,31 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 53: {
+    case 53:
+    {
         break;
     }
 
-    case 54: {
+    case 54:
+    {
         symbal_stack.push(LexType::FormList);
         symbal_stack.push(LexType::COMMA);
         break;
     }
 
-    case 55: {
+    case 55:
+    {
         symbal_stack.push(LexType::DeclarePart);
         break;
     }
-    case 56: {
+    case 56:
+    {
         symbal_stack.push(LexType::ProgramBody);
         break;
     }
 
-    case 57: {
+    case 57:
+    {
         symbal_stack.push(LexType::END);
         symbal_stack.push(LexType::StmList);
         symbal_stack.push(LexType::BEGIN);
@@ -702,22 +762,26 @@ void ParserLL1::process(int id)
         syntaxtree_stack.push(&(current_treenode->child[0]));
         break;
     }
-    case 58: {
+    case 58:
+    {
         symbal_stack.push(LexType::StmMore);
         symbal_stack.push(LexType::Stm);
         break;
     }
-    case 59: {
+    case 59:
+    {
         syntaxtree_stack.pop();
         break;
     }
 
-    case 60: {
+    case 60:
+    {
         symbal_stack.push(LexType::StmList);
         symbal_stack.push(LexType::SEMI);
         break;
     }
-    case 61: {
+    case 61:
+    {
         symbal_stack.push(LexType::ConditionalStm);
 
         current_treenode = TreeNode::newStmtNode(StmtKind::IfK);
@@ -729,7 +793,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 62: {
+    case 62:
+    {
         symbal_stack.push(LexType::LoopStm);
 
         current_treenode = TreeNode::newStmtNode(StmtKind::WhileK);
@@ -742,7 +807,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 63: {
+    case 63:
+    {
         symbal_stack.push(LexType::InputStm);
 
         TreeNode** t = syntaxtree_stack.pop();
@@ -753,7 +819,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 64: {
+    case 64:
+    {
         symbal_stack.push(LexType::OutputStm);
 
         TreeNode** t = syntaxtree_stack.pop();
@@ -764,7 +831,8 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 65: {
+    case 65:
+    {
         symbal_stack.push(LexType::ReturnStm);
 
         TreeNode** t = syntaxtree_stack.pop();
@@ -776,7 +844,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 66: {
+    case 66:
+    {
         symbal_stack.push(LexType::AssCall);
         symbal_stack.push(LexType::ID);
 
@@ -796,13 +865,15 @@ void ParserLL1::process(int id)
 
         break;
     }
-    case 67: {
+    case 67:
+    {
         symbal_stack.push(LexType::AssignmentRest);
 
         current_treenode->kind.stmt = StmtKind::AssignK;
         break;
     }
-    case 68: {
+    case 68:
+    {
         symbal_stack.push(LexType::CallStmRest);
         /*过程调用语句左部是标识符变量，表示过程名*/
         current_treenode->child[0]->attr.ExpAttr.varkind = VarKind::IdV;
@@ -810,7 +881,8 @@ void ParserLL1::process(int id)
         current_treenode->kind.stmt = StmtKind::CallK;
         break;
     }
-    case 69: {
+    case 69:
+    {
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::ASSIGN);
         symbal_stack.push(LexType::VariMore);
@@ -824,7 +896,8 @@ void ParserLL1::process(int id)
         op_stack.push(t); //操作符栈的栈底存入一个特殊的操作符作为标志
         break;
     }
-    case 70: {
+    case 70:
+    {
         symbal_stack.push(LexType::FI);
         symbal_stack.push(LexType::StmList);
         symbal_stack.push(LexType::ELSE);
@@ -840,7 +913,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 71: {
+    case 71:
+    {
         symbal_stack.push(LexType::ENDWH);
         symbal_stack.push(LexType::StmList);
         symbal_stack.push(LexType::DO);
@@ -853,21 +927,24 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 72: {
+    case 72:
+    {
         symbal_stack.push(LexType::RPAREN);
         symbal_stack.push(LexType::InVar);
         symbal_stack.push(LexType::LPAREN);
         symbal_stack.push(LexType::READ);
         break;
     }
-    case 73: {
+    case 73:
+    {
         symbal_stack.push(LexType::ID);
 
         current_treenode->name[0] = head->getSem();
         current_treenode->idnum++;
         break;
     }
-    case 74: {
+    case 74:
+    {
         symbal_stack.push(LexType::RPAREN);
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::LPAREN);
@@ -880,12 +957,14 @@ void ParserLL1::process(int id)
         op_stack.push(t); //操作符栈的栈底存入一个特殊的操作符作为标志
         break;
     }
-    case 75: {
+    case 75:
+    {
         symbal_stack.push(LexType::RETURN);
         break;
     }
 
-    case 76: {
+    case 76:
+    {
         symbal_stack.push(LexType::RPAREN);
         symbal_stack.push(LexType::ActParamList);
         symbal_stack.push(LexType::LPAREN);
@@ -893,11 +972,13 @@ void ParserLL1::process(int id)
         syntaxtree_stack.push(&(current_treenode->child[1]));
         break;
     }
-    case 77: {
+    case 77:
+    {
         syntaxtree_stack.pop();
         break;
     }
-    case 78: {
+    case 78:
+    {
         symbal_stack.push(LexType::ActParamMore);
         symbal_stack.push(LexType::Exp);
 
@@ -907,10 +988,12 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 79: {
+    case 79:
+    {
         break;
     }
-    case 80: {
+    case 80:
+    {
         symbal_stack.push(LexType::ActParamList);
         symbal_stack.push(LexType::COMMA);
 
@@ -918,9 +1001,10 @@ void ParserLL1::process(int id)
         break;
     }
 
-        /*********************表达式部分************************/
+    /*********************表达式部分************************/
 
-    case 81: {
+    case 81:
+    {
         symbal_stack.push(LexType::OtherRelE);
         symbal_stack.push(LexType::Exp);
 
@@ -932,7 +1016,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 82: {
+    case 82:
+    {
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::CmpOp);
 
@@ -941,7 +1026,7 @@ void ParserLL1::process(int id)
 
         LexType sTop = op_stack.top()->attr.ExpAttr.op;
         while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType()))
-        /*如果操作符栈顶运算符的优先级高于或等于当前读到的操作符*/
+            /*如果操作符栈顶运算符的优先级高于或等于当前读到的操作符*/
         {
             TreeNode* t = op_stack.pop();
             TreeNode* Rnum = num_stack.pop();
@@ -960,17 +1045,20 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 83: {
+    case 83:
+    {
         symbal_stack.push(LexType::OtherTerm);
         symbal_stack.push(LexType::Term);
         break;
     }
 
-    case 84: {
+    case 84:
+    {
         if ((head->getLexType() == LexType::RPAREN) && (expflag != 0))
-        //说明当前右括号是表达式中的一部分
+            //说明当前右括号是表达式中的一部分
         {
-            while (op_stack.top()->attr.ExpAttr.op != LexType::LPAREN) {
+            while (op_stack.top()->attr.ExpAttr.op != LexType::LPAREN)
+            {
                 TreeNode* t = op_stack.pop();
                 TreeNode* Rnum = num_stack.pop();
                 TreeNode* Lnum = num_stack.pop();
@@ -981,9 +1069,13 @@ void ParserLL1::process(int id)
             }
             op_stack.pop(); //弹出左括号
             expflag--;
-        } else {
-            if ((getExpResult) || (getExpResult2)) {
-                while (op_stack.top()->attr.ExpAttr.op != LexType::END) {
+        }
+        else
+        {
+            if ((getExpResult) || (getExpResult2))
+            {
+                while (op_stack.top()->attr.ExpAttr.op != LexType::END)
+                {
                     TreeNode* t = op_stack.pop();
                     TreeNode* Rnum = num_stack.pop();
                     TreeNode* Lnum = num_stack.pop();
@@ -1007,14 +1099,16 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 85: {
+    case 85:
+    {
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::AddOp);
 
         TreeNode* current_treenode = TreeNode::newExpNode(ExpKind::OpK);
         current_treenode->attr.ExpAttr.op = head->getLexType();
         LexType sTop = op_stack.top()->attr.ExpAttr.op;
-        while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType())) {
+        while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType()))
+        {
             TreeNode* t = op_stack.pop();
             TreeNode* Rnum = num_stack.pop();
             TreeNode* Lnum = num_stack.pop();
@@ -1027,15 +1121,18 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 86: {
+    case 86:
+    {
         symbal_stack.push(LexType::OtherFactor);
         symbal_stack.push(LexType::Factor);
         break;
     }
-    case 87: {
+    case 87:
+    {
         break;
     }
-    case 88: {
+    case 88:
+    {
         symbal_stack.push(LexType::Term);
         symbal_stack.push(LexType::MultOp);
 
@@ -1044,7 +1141,7 @@ void ParserLL1::process(int id)
 
         LexType sTop = op_stack.top()->attr.ExpAttr.op;
         while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType()))
-        /*如果操作符栈顶运算符的优先级高于或等于当前读到的操作符*/
+            /*如果操作符栈顶运算符的优先级高于或等于当前读到的操作符*/
         {
             TreeNode* t = op_stack.pop();
             TreeNode* Rnum = num_stack.pop();
@@ -1059,7 +1156,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 89: {
+    case 89:
+    {
         symbal_stack.push(LexType::RPAREN);
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::LPAREN);
@@ -1071,7 +1169,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 90: {
+    case 90:
+    {
         symbal_stack.push(LexType::INTC_VAL);
 
         TreeNode* t = TreeNode::newExpNode(ExpKind::ConstK);
@@ -1082,12 +1181,14 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 91: {
+    case 91:
+    {
         symbal_stack.push(LexType::Variable);
         break;
     }
 
-    case 92: {
+    case 92:
+    {
         symbal_stack.push(LexType::VariMore);
         symbal_stack.push(LexType::ID);
 
@@ -1100,13 +1201,15 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 93: {
+    case 93:
+    {
         /*标识符变量*/
         current_treenode->attr.ExpAttr.varkind = VarKind::IdV;
         break;
     }
 
-    case 94: {
+    case 94:
+    {
         symbal_stack.push(LexType::RMIDPAREN);
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::LMIDPAREN);
@@ -1127,7 +1230,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 95: {
+    case 95:
+    {
         symbal_stack.push(LexType::FieldVar);
         symbal_stack.push(LexType::DOT);
         /*域成员变量*/
@@ -1136,7 +1240,8 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 96: {
+    case 96:
+    {
         symbal_stack.push(LexType::FieldVarMore);
         symbal_stack.push(LexType::ID);
 
@@ -1151,13 +1256,15 @@ void ParserLL1::process(int id)
         break;
     }
 
-    case 97: {
+    case 97:
+    {
         /*域成员是标识符变量*/
         current_treenode->attr.ExpAttr.varkind = VarKind::IdV;
         break;
     }
 
-    case 98: {
+    case 98:
+    {
         symbal_stack.push(LexType::RMIDPAREN);
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::LMIDPAREN);
@@ -1176,32 +1283,38 @@ void ParserLL1::process(int id)
         getExpResult2 = true;
         break;
     }
-    case 99: {
+    case 99:
+    {
         symbal_stack.push(LexType::LT);
         break;
     }
 
-    case 100: {
+    case 100:
+    {
         symbal_stack.push(LexType::EQ);
         break;
     }
 
-    case 101: {
+    case 101:
+    {
         symbal_stack.push(LexType::PLUS);
         break;
     }
 
-    case 102: {
+    case 102:
+    {
         symbal_stack.push(LexType::MINUS);
         break;
     }
 
-    case 103: {
+    case 103:
+    {
         symbal_stack.push(LexType::TIMES);
         break;
     }
 
-    case 104: {
+    case 104:
+    {
         symbal_stack.push(LexType::DIVIDE);
         break;
     }
