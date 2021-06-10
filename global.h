@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 #include <QMap>
+#include <QSet>
 #include <QString>
 enum class LexType
 {
@@ -196,6 +197,8 @@ extern QMap<LexType, QString> lexName;
 extern QMap<QString, LexType> reservedWords;
 extern QMap<char, LexType> opWords;
 extern QMap<NodeKind, QString> nodekindName;
+extern QSet<LexType> TTSet;
+extern QSet<LexType> NTSet;
 }
 
 #endif // GLOBAL_H
