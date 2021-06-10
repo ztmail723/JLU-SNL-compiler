@@ -163,7 +163,7 @@ enum class ExpKind
 {
     OpK, // 操作符类型
     ConstK, // 常整数类型
-    IdK // 标识符类型
+    VariK // 标识符类型
 };
 union Kind
 {
