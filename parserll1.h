@@ -23,8 +23,8 @@ private:
     bool getExpResult = true;
     int expflag = 0;
     int getExpResult2 = false;
-    static int nowLine;
 public:
+    static int nowLine;
     static TreeNode* newSpecNode(NodeKind kind);
     static TreeNode* newStmtNode(StmtKind kind);
     static TreeNode* newExpNode(ExpKind kind);
