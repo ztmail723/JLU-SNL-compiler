@@ -47,3 +47,17 @@ TreeNode* TreeNode::newSpecNode(NodeKind kind)
     }
     return t;
 }
+
+TreeNode* TreeNode::newStmtNode(StmtKind kind)
+{
+    auto t = TreeNode::newSpecNode(NodeKind::StmtK);
+    t->kind.stmt = kind;
+    return t;
+}
+
+TreeNode* TreeNode::newExpNode(ExpKind kind)
+{
+    auto t = TreeNode::newSpecNode(NodeKind::ExpK);
+    t->kind.exp = kind;
+    return t;
+}
