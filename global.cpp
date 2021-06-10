@@ -60,25 +60,26 @@ QMap<NodeKind, QString> ConstantVar::nodekindName = {{NodeKind::ProK, "ProK"},
     {NodeKind::StmtK, "StmtK"},
     {NodeKind::ExpK, "ExpK"}
 };
-QSet<LexType> ConstantVar::TTSet =
+
+std::set<LexType> ConstantVar::TTSet =
 {
-    /* 簿记单词符号 */
+    // 簿记单词符号
     LexType::ENDFILE,   LexType::ERROR,
-    /* 保留字 */
+    // 保留字
     LexType::PROGRAM,   LexType::PROCEDURE, LexType::TYPE,  LexType::VAR,       LexType::IF,
     LexType::THEN,      LexType::ELSE,      LexType::FI,        LexType::WHILE,     LexType::DO,
     LexType::ENDWH,     LexType::BEGIN,     LexType::END,   LexType::READ,      LexType::WRITE,
     LexType::ARRAY,     LexType::OF,        LexType::RECORD,    LexType::RETURN,
     LexType::INTEGER_T, LexType::CHAR_T,
-    /* 多字符单词符号 */
+    // 多字符单词符号
     LexType::ID,        LexType::INTC_VAL,      LexType::CHARC_VAL,
-    /*特殊符号 */
+    // 特殊符号
     LexType::ASSIGN,        LexType::EQ,        LexType::LT,        LexType::PLUS,      LexType::MINUS,
     LexType::TIMES, LexType::DIVIDE,        LexType::LPAREN,    LexType::RPAREN,        LexType::DOT,
     LexType::COLON,     LexType::SEMI,      LexType::COMMA, LexType::LMIDPAREN, LexType::RMIDPAREN,
     LexType::UNDERANGE
 };
-QSet<LexType> ConstantVar::NTSet =
+std::set<LexType> ConstantVar::NTSet =
 {
     LexType::Program,         LexType::ProgramHead,     LexType::ProgramName,   LexType::DeclarePart,
     LexType::TypeDec,        LexType::TypeDeclaration,  LexType::TypeDecList,   LexType::TypeDecMore,
@@ -98,3 +99,4 @@ QSet<LexType> ConstantVar::NTSet =
     LexType::Factor,         LexType::Variable,         LexType::VariMore,      LexType::FieldVar,
     LexType::FieldVarMore,   LexType::CmpOp,            LexType::AddOp,          LexType::MultOp
 };
+

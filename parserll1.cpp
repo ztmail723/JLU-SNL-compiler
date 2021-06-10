@@ -289,10 +289,11 @@ TreeNode* ParserLL1::newExpNode(ExpKind kind)
 
 SyntaxTree* ParserLL1::run(TokenList tokenList)
 {
+    SyntaxTree* syntaxTree = new SyntaxTree();
     int tokenListSize = tokenList.size();
     int head = 0;
     ParserLL1::nowLine = tokenList[head].getLineShow();
-    SyntaxTree* syntaxTree = new SyntaxTree();
+
     syntaxTree->setRoot(ParserLL1::newSpecNode(NodeKind::ProK));
     symbal_stack.push(LexType::Program);
     syntaxtree_stack.push(&syntaxTree->getRoot()->child[2]);
@@ -305,7 +306,7 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
             qDebug() << "head越界";
             exit(0);
         }
-        if (ConstantVar::NTSet.contains(symbal_stack.top()))
+        if (ConstantVar::NTSet.find(symbal_stack.top()) != ConstantVar::NTSet.end())
         {
             auto ss = symbal_stack.pop();
             auto iter = table.find(QPair<LexType, LexType>(ss, tokenList[head].getLexType()));
@@ -319,7 +320,7 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
                 //TODO not in table
             }
         }
-        if (ConstantVar::TTSet.contains(symbal_stack.top()))
+        if (ConstantVar::TTSet.find(symbal_stack.top()) != ConstantVar::TTSet.end())
         {
             if (symbal_stack.top() == tokenList[head].getLexType())
             {
@@ -349,6 +350,7 @@ int ParserLL1::getPriosity(LexType op)
     case LexType::LPAREN:
         pri = 0;
     case LexType::LT:
+        ;
     case LexType::EQ:
         pri = 1;
         break;

@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 #include <QMap>
-#include <QSet>
+#include <set>
 #include <QString>
 enum class LexType
 {
@@ -127,6 +127,7 @@ enum class LexType
     AddOp,
     MultOp
 };
+
 enum class NodeKind
 {
     /* 标志结点 */
@@ -197,8 +198,8 @@ extern QMap<LexType, QString> lexName;
 extern QMap<QString, LexType> reservedWords;
 extern QMap<char, LexType> opWords;
 extern QMap<NodeKind, QString> nodekindName;
-extern QSet<LexType> TTSet;
-extern QSet<LexType> NTSet;
+extern std::set<LexType> TTSet;
+extern std::set<LexType> NTSet;
 }
 
 #endif // GLOBAL_H
