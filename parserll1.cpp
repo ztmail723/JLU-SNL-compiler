@@ -1,4 +1,5 @@
 #include "parserll1.h"
+#include <QDebug>
 int ParserLL1::nowLine = 0;
 ParserLL1::ParserLL1()
 {
@@ -290,13 +291,50 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
 {
     int tokenListSize = tokenList.size();
     int head = 0;
+    ParserLL1::nowLine = tokenList[head].getLineShow();
     SyntaxTree* syntaxTree = new SyntaxTree();
     syntaxTree->setRoot(ParserLL1::newSpecNode(NodeKind::ProK));
     symbal_stack.push(LexType::Program);
     syntaxtree_stack.push(&syntaxTree->getRoot()->child[2]);
     syntaxtree_stack.push(&syntaxTree->getRoot()->child[1]);
     syntaxtree_stack.push(&syntaxTree->getRoot()->child[0]);
-
+    while (!symbal_stack.empty())
+    {
+        if (head >= tokenListSize)
+        {
+            qDebug() << "head越界";
+            exit(0);
+        }
+        if (ConstantVar::NTSet.contains(symbal_stack.top()))
+        {
+            auto ss = symbal_stack.pop();
+            auto iter = table.find(QPair<LexType, LexType>(ss, tokenList[head].getLexType()));
+            if (table.cend() != iter)
+            {
+                this->process(iter.value());
+            }
+            else
+            {
+                qDebug() << "i don't understand the :" << ConstantVar::lexName[tokenList[head].getLexType()] << "in this line:" << ParserLL1::nowLine;
+                //TODO not in table
+            }
+        }
+        if (ConstantVar::TTSet.contains(symbal_stack.top()))
+        {
+            if (symbal_stack.top() == tokenList[head].getLexType())
+            {
+                symbal_stack.pop();
+                head++;
+                ParserLL1::nowLine = tokenList[head].getLineShow();
+            }
+            else
+            {
+                qDebug() << "unexpected token:" << ConstantVar::lexName[tokenList[head].getLexType()] << " in line " << ParserLL1::nowLine; //TODO ERROR not match
+                head++;
+                //TODO error handing : just jump over
+            }
+        }
+    }
     return syntaxTree;
 }
 
