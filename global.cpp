@@ -78,3 +78,23 @@ QSet<LexType> ConstantVar::TTSet =
     LexType::COLON,     LexType::SEMI,      LexType::COMMA, LexType::LMIDPAREN, LexType::RMIDPAREN,
     LexType::UNDERANGE
 };
+QSet<LexType> ConstantVar::NTSet =
+{
+    LexType::Program,         LexType::ProgramHead,     LexType::ProgramName,   LexType::DeclarePart,
+    LexType::TypeDec,        LexType::TypeDeclaration,  LexType::TypeDecList,   LexType::TypeDecMore,
+    LexType::TypeId,          LexType::TypeName,            LexType::BaseType,      LexType::StructureType,
+    LexType::ArrayType,      LexType::Low,              LexType::Top,            LexType::RecType,
+    LexType::FieldDecList,   LexType::FieldDecMore,     LexType::IdList,            LexType::IdMore,
+    LexType::VarDec,          LexType::VarDeclaration,  LexType::VarDecList,        LexType::VarDecMore,
+    LexType::VarIdList,   LexType::VarIdMore,       LexType::ProcDec,       LexType::ProcDeclaration,
+    LexType::ProcDecMore,    LexType::ProcName,         LexType::ParamList,     LexType::ParamDecList,
+    LexType::ParamMore,      LexType::Param,            LexType::FormList,      LexType::FidMore,
+    LexType::ProcDecPart,    LexType::ProcBody,         LexType::ProgramBody,   LexType::StmList,
+    LexType::StmMore,        LexType::Stm,              LexType::AssCall,       LexType::AssignmentRest,
+    LexType::ConditionalStm, LexType::StmL,             LexType::LoopStm,       LexType::InputStm,
+    LexType::InVar,          LexType::OutputStm,        LexType::ReturnStm,     LexType::CallStmRest,
+    LexType::ActParamList,   LexType::ActParamMore,     LexType::RelExp,            LexType::OtherRelE,
+    LexType::Exp,             LexType::OtherTerm,       LexType::Term,           LexType::OtherFactor,
+    LexType::Factor,         LexType::Variable,         LexType::VariMore,      LexType::FieldVar,
+    LexType::FieldVarMore,   LexType::CmpOp,            LexType::AddOp,          LexType::MultOp
+};
