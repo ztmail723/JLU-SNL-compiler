@@ -7,7 +7,7 @@
 class TreeNode
 {
 public:
-    QVector<TreeNode*> child; // 指向子语法树结点指针
+    TreeNode* child[3]; // 指向子语法树结点指针
     TreeNode* sibling; // 指向兄弟语法树结点指针
     int lineno; // 记录源程序行号
     NodeKind nodekind; // 记录语法树的结点类型

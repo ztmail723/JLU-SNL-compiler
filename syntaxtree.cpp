@@ -34,7 +34,7 @@ TreeNode* TreeNode::newSpecNode(NodeKind kind)
     int i;
     for (i = 0; i < 3; i++)
     {
-        t->child.append(nullptr);
+        t->child[i] = nullptr;
     }
     t->sibling = nullptr;
     t->nodekind = kind;
