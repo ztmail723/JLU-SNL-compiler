@@ -22,5 +22,5 @@ Token& TokenList::operator[](int index)
 
 int TokenList::size()
 {
-    return this->tokenList.size();
+    return this->tokenList.length();
 }

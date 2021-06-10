@@ -2,6 +2,7 @@
 #define GLOBAL_H
 #include <QMap>
 #include <QString>
+
 enum class LexType
 {
     /* 簿记单词符号 */

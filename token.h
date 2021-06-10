@@ -5,6 +5,7 @@
 class Token {
 public:
     Token();
+    Token(int _lineShow, LexType _lex, QString _sem);
     void setLineShow(int lineShow);
     int& getLineShow();
     void setLexType(LexType lexType);
