@@ -5,6 +5,7 @@
 #include "lexerimp.h"
 #include "parserll1.h"
 #include "parserrecursivedescent.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)

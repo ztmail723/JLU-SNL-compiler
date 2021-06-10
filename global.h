@@ -3,6 +3,7 @@
 #include <QMap>
 #include <set>
 #include <QString>
+
 enum class LexType
 {
     /* 簿记单词符号 */
