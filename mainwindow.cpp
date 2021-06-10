@@ -110,19 +110,31 @@ void MainWindow::printParser() // 显示语法分析的结果
     QTreeWidgetItem* topItem = new QTreeWidgetItem(ui->treeWidget);
     QString str = ConstantVar::nodekindName[root->nodekind];
     topItem->setText(0, str);
-    for (auto i : root->child)
+    for (int i = 0; i < 3; i++)
     {
-        this->preOrder(i, topItem);
+        if (root->child[i] == nullptr)
+        {
+            continue;
+        }
+        this->preOrder(root->child[i], topItem);
     }
 }
 
 void MainWindow::preOrder(TreeNode* node, QTreeWidgetItem* parentItem)
 {
     QTreeWidgetItem* nowItem = new QTreeWidgetItem(parentItem);
+    if (node->sibling != nullptr)
+    {
+        this->preOrder(node->sibling, parentItem);
+    }
     QString str = ConstantVar::nodekindName[node->nodekind];
     nowItem->setText(0, str);
-    for (auto i : node->child)
+    for (int i = 0; i < 3; i++)
     {
-        this->preOrder(i, nowItem);
+        if (node->child[i] == nullptr)
+        {
+            continue;
+        }
+        this->preOrder(node->child[i], nowItem);
     }
 }
