@@ -1,6 +1,7 @@
 #include "parserll1.h"
 #include <QDebug>
 int ParserLL1::nowLine = 0;
+int ParserLL1::head = 0;
 ParserLL1::ParserLL1()
 {
     this->table =
@@ -290,10 +291,8 @@ TreeNode* ParserLL1::newExpNode(ExpKind kind)
 SyntaxTree* ParserLL1::run(TokenList tokenList)
 {
     SyntaxTree* syntaxTree = new SyntaxTree();
-    int tokenListSize = tokenList.size();
-    int head = 0;
+    ParserLL1::head = 0;
     ParserLL1::nowLine = tokenList[head].getLineShow();
-
     syntaxTree->setRoot(ParserLL1::newSpecNode(NodeKind::ProK));
     symbal_stack.push(LexType::Program);
     syntaxtree_stack.push(&syntaxTree->getRoot()->child[2]);
@@ -301,10 +300,11 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
     syntaxtree_stack.push(&syntaxTree->getRoot()->child[0]);
     while (!symbal_stack.empty())
     {
-        if (head >= tokenListSize)
+        ParserLL1::nowLine = tokenList[head].getLineShow();
+        if (head >= tokenList.size())
         {
             qDebug() << "head越界";
-            exit(0);
+            break;
         }
         if (ConstantVar::NTSet.find(symbal_stack.top()) != ConstantVar::NTSet.end())
         {
@@ -312,13 +312,16 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
             auto iter = table.find(QPair<LexType, LexType>(ss, tokenList[head].getLexType()));
             if (table.cend() != iter)
             {
-                this->process(iter.value());
+                //qDebug() << "iterVal=" << iter.value() << " size " << syntaxtree_stack.size();
+                this->process(iter.value(), tokenList);
+                //qDebug() << syntaxtree_stack.size();
             }
             else
             {
                 qDebug() << "i don't understand the :" << ConstantVar::lexName[tokenList[head].getLexType()] << "in this line:" << ParserLL1::nowLine;
                 //TODO not in table
             }
+            continue;
         }
         if (ConstantVar::TTSet.find(symbal_stack.top()) != ConstantVar::TTSet.end())
         {
@@ -326,7 +329,7 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
             {
                 symbal_stack.pop();
                 head++;
-                ParserLL1::nowLine = tokenList[head].getLineShow();
+                //ParserLL1::nowLine = tokenList[head].getLineShow();
             }
             else
             {
@@ -334,6 +337,7 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
                 head++;
                 //TODO error handing : just jump over
             }
+            continue;
         }
     }
     return syntaxTree;
@@ -368,7 +372,7 @@ int ParserLL1::getPriosity(LexType op)
     return pri;
 }
 
-void ParserLL1::process(int id)
+void ParserLL1::process(int id, TokenList& tokenList)
 {
     switch (id)
     {
@@ -392,7 +396,7 @@ void ParserLL1::process(int id)
     case 3:
     {
         symbal_stack.push(LexType::ID);
-        current_treenode->name[0] = head->getSem();
+        current_treenode->name[0] = tokenList[head].getSem();
         ++current_treenode->idnum;
         break;
     }
@@ -456,7 +460,7 @@ void ParserLL1::process(int id)
     case 11:
     {
         symbal_stack.push(LexType::ID);
-        current_treenode->name[0] = head->getSem();
+        current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
         break;
     }
@@ -475,7 +479,7 @@ void ParserLL1::process(int id)
     {
         symbal_stack.push(LexType::ID);
         current_treenode->kind.dec = DecKind::IdK;
-        current_treenode->type_name = head->getSem();
+        current_treenode->type_name = tokenList[head].getSem();
         break;
     }
     case 15:
@@ -519,13 +523,13 @@ void ParserLL1::process(int id)
     case 20:
     {
         symbal_stack.push(LexType::INTC_VAL);
-        current_treenode->attr.ArrayAttr.low = head->getSem().toInt();
+        current_treenode->attr.ArrayAttr.low = tokenList[head].getSem().toInt();
         break;
     }
     case 21:
     {
         symbal_stack.push(LexType::INTC_VAL);
-        current_treenode->attr.ArrayAttr.up = head->getSem().toInt();
+        current_treenode->attr.ArrayAttr.up = tokenList[head].getSem().toInt();
         break;
     }
     case 22:
@@ -584,7 +588,7 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::ID);
 
         /*纪录一个域中各个变量的语义信息*/
-        current_treenode->name[current_treenode->idnum] = head->getSem();
+        current_treenode->name[current_treenode->idnum] = tokenList[head].getSem();
         current_treenode->idnum++;
         break;
     }
@@ -654,7 +658,7 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::VarIdMore);
         symbal_stack.push(LexType::ID);
 
-        current_treenode->name[current_treenode->idnum] = head->getSem();
+        current_treenode->name[current_treenode->idnum] = tokenList[head].getSem();
         current_treenode->idnum++;
         break;
     }
@@ -721,7 +725,7 @@ void ParserLL1::process(int id)
     {
         symbal_stack.push(LexType::ID);
 
-        current_treenode->name[0] = head->getSem();
+        current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
         break;
     }
@@ -790,7 +794,7 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::FidMore);
         symbal_stack.push(LexType::ID);
 
-        current_treenode->name[current_treenode->idnum] = head->getSem();
+        current_treenode->name[current_treenode->idnum] = tokenList[head].getSem();
         current_treenode->idnum++;
 
         break;
@@ -928,7 +932,7 @@ void ParserLL1::process(int id)
 
         /*赋值语句左部变量节点*/
         TreeNode* t = ParserLL1::newExpNode(ExpKind::VariK);
-        t->name[0] = head->getSem();
+        t->name[0] = tokenList[head].getSem();
         t->idnum++;
 
         /*赋值语句的child[0]指向左部的变量节点*/
@@ -1014,7 +1018,7 @@ void ParserLL1::process(int id)
     {
         symbal_stack.push(LexType::ID);
 
-        current_treenode->name[0] = head->getSem();
+        current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
         break;
     }
@@ -1097,10 +1101,10 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::CmpOp);
 
         TreeNode* current_treenode = ParserLL1::newExpNode(ExpKind::OpK);
-        current_treenode->attr.ExpAttr.op = head->getLexType();
+        current_treenode->attr.ExpAttr.op = tokenList[head].getLexType();
 
         LexType sTop = op_stack.top()->attr.ExpAttr.op;
-        while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType()))
+        while (this->getPriosity(sTop) >= this->getPriosity(tokenList[head].getLexType()))
             /*如果操作符栈顶运算符的优先级高于或等于当前读到的操作符*/
         {
             TreeNode* t = op_stack.pop();
@@ -1129,7 +1133,7 @@ void ParserLL1::process(int id)
 
     case 84:
     {
-        if ((head->getLexType() == LexType::RPAREN) && (expflag != 0))
+        if ((tokenList[head].getLexType() == LexType::RPAREN) && (expflag != 0))
             //说明当前右括号是表达式中的一部分
         {
             while (op_stack.top()->attr.ExpAttr.op != LexType::LPAREN)
@@ -1180,9 +1184,9 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::AddOp);
 
         TreeNode* current_treenode = ParserLL1::newExpNode(ExpKind::OpK);
-        current_treenode->attr.ExpAttr.op = head->getLexType();
+        current_treenode->attr.ExpAttr.op = tokenList[head].getLexType();
         LexType sTop = op_stack.top()->attr.ExpAttr.op;
-        while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType()))
+        while (this->getPriosity(sTop) >= this->getPriosity(tokenList[head].getLexType()))
         {
             TreeNode* t = op_stack.pop();
             TreeNode* Rnum = num_stack.pop();
@@ -1212,10 +1216,10 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::MultOp);
 
         TreeNode* current_treenode = ParserLL1::newExpNode(ExpKind::OpK);
-        current_treenode->attr.ExpAttr.op = head->getLexType();
+        current_treenode->attr.ExpAttr.op = tokenList[head].getLexType();
 
         LexType sTop = op_stack.top()->attr.ExpAttr.op;
-        while (this->getPriosity(sTop) >= this->getPriosity(head->getLexType()))
+        while (this->getPriosity(sTop) >= this->getPriosity(tokenList[head].getLexType()))
             /*如果操作符栈顶运算符的优先级高于或等于当前读到的操作符*/
         {
             TreeNode* t = op_stack.pop();
@@ -1238,7 +1242,7 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::LPAREN);
 
         TreeNode* t = ParserLL1::newExpNode(ExpKind::OpK);
-        t->attr.ExpAttr.op = head->getLexType(); /*把左括号也压入栈中*/
+        t->attr.ExpAttr.op = tokenList[head].getLexType(); /*把左括号也压入栈中*/
         op_stack.push(t);
         expflag++;
         break;
@@ -1249,7 +1253,7 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::INTC_VAL);
 
         TreeNode* t = ParserLL1::newExpNode(ExpKind::ConstK);
-        t->attr.ExpAttr.val = head->getSem().toInt();
+        t->attr.ExpAttr.val = tokenList[head].getSem().toInt();
         /*常数节点入操作数栈*/
         num_stack.push(t);
 
@@ -1268,7 +1272,7 @@ void ParserLL1::process(int id)
         symbal_stack.push(LexType::ID);
 
         current_treenode = ParserLL1::newExpNode(ExpKind::VariK);
-        current_treenode->name[0] = head->getSem();
+        current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
         /*变量节点入操作数栈*/
         num_stack.push(current_treenode);
@@ -1322,7 +1326,7 @@ void ParserLL1::process(int id)
 
         /*纪录域的成员*/
         current_treenode = ParserLL1::newExpNode(ExpKind::VariK);
-        current_treenode->name[0] = head->getSem();
+        current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
 
         TreeNode** t = syntaxtree_stack.pop();

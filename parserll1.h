@@ -17,7 +17,6 @@ private:
     QStack<TreeNode*> num_stack;
 
     TreeNode* current_treenode;
-    Token* head;
     DecKind* temp;
     TreeNode* saveP;
     bool getExpResult = true;
@@ -25,12 +24,13 @@ private:
     int getExpResult2 = false;
 public:
     static int nowLine;
+    static int head;
     static TreeNode* newSpecNode(NodeKind kind);
     static TreeNode* newStmtNode(StmtKind kind);
     static TreeNode* newExpNode(ExpKind kind);
 private:
     int getPriosity(LexType op);
-    void process(int id);
+    void process(int id, TokenList& tokenList);
 };
 
 #endif // PARSERLL1_H
