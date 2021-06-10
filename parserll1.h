@@ -15,7 +15,17 @@ private:
     QStack<TreeNode**> syntaxtree_stack;
     QStack<TreeNode*> op_stack;
     QStack<TreeNode*> num_stack;
+
+    TreeNode* current_treenode;
+    Token* head;
+    DecKind* temp;
+    TreeNode* saveP;
+    bool getExpResult = true;
+    int expflag = 0;
+    int getExpResult2 = false;
+private:
     int getPriosity(LexType op);
+    void process(int id);
 };
 
 #endif // PARSERLL1_H
