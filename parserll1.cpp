@@ -589,8 +589,8 @@ void ParserLL1::process(int id)
 
     case 38 :
     {
-        symbal_stack.push(VarIdList);
-        symbal_stack.push(COMMA);
+        symbal_stack.push(LexType::VarIdList);
+        symbal_stack.push(LexType::COMMA);
 
         break;
     }
@@ -601,33 +601,29 @@ void ParserLL1::process(int id)
 
     case 40 :
     {
-        symbal_stack.push(ProcDeclaration);
+        symbal_stack.push(LexType::ProcDeclaration);
 
         break;
     }
     case 41 :
     {
-        symbal_stack.push(ProcDecMore);
-        symbal_stack.push(ProcBody);
-        symbal_stack.push(ProcDecPart);
-        symbal_stack.push(SEMI);
-        symbal_stack.push(RPAREN);
-        symbal_stack.push(ParamList);
-        symbal_stack.push(LPAREN);
-        symbal_stack.push(ProcName);
-        symbal_stack.push(PROCEDURE);
+        symbal_stack.push(LexType::ProcDecMore);
+        symbal_stack.push(LexType::ProcBody);
+        symbal_stack.push(LexType::ProcDecPart);
+        symbal_stack.push(LexType::SEMI);
+        symbal_stack.push(LexType::RPAREN);
+        symbal_stack.push(LexType::ParamList);
+        symbal_stack.push(LexType::LPAREN);
+        symbal_stack.push(LexType::ProcName);
+        symbal_stack.push(LexType::PROCEDURE);
 
-
-        current_treenode = newProcNode();
+        current_treenode = TreeNode::newSpecNode(NodeKind::ProcDecK);
         TreeNode** t = syntaxtree_stack.pop();
         (*t) = current_treenode;
 
         syntaxtree_stack.push(&(current_treenode->sibling));
-
         syntaxtree_stack.push(&(current_treenode->child[2])); /*指向语句序列*/
-
         syntaxtree_stack.push(&(current_treenode->child[1]));  /*指向函数的声明部分*/
-
         syntaxtree_stack.push(&(current_treenode->child[0]));  /*指向参数声明部分*/
         break;
     }
@@ -641,15 +637,15 @@ void ParserLL1::process(int id)
 
     case 43 :
     {
-        symbal_stack.push(ProcDeclaration);
+        symbal_stack.push(LexType::ProcDeclaration);
         break;
     }
 
     case 44 :
     {
-        symbal_stack.push(ID);
+        symbal_stack.push(LexType::ID);
 
-        strcpy(current_treenode->name[0], head->getSem().toStdString().c_str());
+        current_treenode->name[0] = head->getSem();
         current_treenode->idnum++;
         break;
     }
@@ -663,13 +659,13 @@ void ParserLL1::process(int id)
 
     case 46 :
     {
-        symbal_stack.push(ParamDecList);
+        symbal_stack.push(LexType::ParamDecList);
         break;
     }
     case 47 :
     {
-        symbal_stack.push(ParamMore);
-        symbal_stack.push(Param);
+        symbal_stack.push(LexType::ParamMore);
+        symbal_stack.push(LexType::Param);
         break;
     }
     case 48 :
@@ -680,20 +676,20 @@ void ParserLL1::process(int id)
 
     case 49 :
     {
-        symbal_stack.push(ParamDecList);
-        symbal_stack.push(SEMI);
+        symbal_stack.push(LexType::ParamDecList);
+        symbal_stack.push(LexType::SEMI);
         break;
 
     }
     case 50 :
     {
-        symbal_stack.push(FormList);
-        symbal_stack.push(TypeName);
+        symbal_stack.push(LexType::FormList);
+        symbal_stack.push(LexType::TypeName);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = newDecNode();
+        current_treenode = TreeNode::newSpecNode(NodeKind::DecK);
         /*函数的参数类型是值类型*/
-        current_treenode->attr.ProcAttr.paramt = valparamType;
+        current_treenode->attr.ProcAttr.paramt = ParamType::valparamType;
         (*t) = current_treenode;
         syntaxtree_stack.push(&(current_treenode->sibling));
 
@@ -702,14 +698,14 @@ void ParserLL1::process(int id)
     }
     case 51 :
     {
-        symbal_stack.push(FormList);
-        symbal_stack.push(TypeName);
-        symbal_stack.push(VAR);
+        symbal_stack.push(LexType::FormList);
+        symbal_stack.push(LexType::TypeName);
+        symbal_stack.push(LexType::VAR);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = newDecNode();
+        current_treenode = TreeNode::newSpecNode(NodeKind::DecK);
         /*函数的参数类型是变量类型*/
-        current_treenode->attr.ProcAttr.paramt = varparamType;
+        current_treenode->attr.ProcAttr.paramt = ParamType::varparamType;
         (*t) = current_treenode;
         syntaxtree_stack.push(&(current_treenode->sibling));
 
@@ -717,10 +713,10 @@ void ParserLL1::process(int id)
     }
     case 52 :
     {
-        symbal_stack.push(FidMore);
-        symbal_stack.push(ID);
+        symbal_stack.push(LexType::FidMore);
+        symbal_stack.push(LexType::ID);
 
-        strcpy(current_treenode->name[current_treenode->idnum], head->getSem().toStdString().c_str());
+        current_treenode->name[current_treenode->idnum] = head->getSem();
         current_treenode->idnum++;
 
         break;
@@ -732,27 +728,27 @@ void ParserLL1::process(int id)
 
     case 54 :
     {
-        symbal_stack.push(FormList);
-        symbal_stack.push(COMMA);
+        symbal_stack.push(LexType::FormList);
+        symbal_stack.push(LexType::COMMA);
         break;
     }
 
     case 55 :
     {
-        symbal_stack.push(DeclarePart);
+        symbal_stack.push(LexType::DeclarePart);
         break;
     }
     case 56 :
     {
-        symbal_stack.push(ProgramBody);
+        symbal_stack.push(LexType::ProgramBody);
         break;
     }
 
     case 57 :
     {
-        symbal_stack.push(END);
-        symbal_stack.push(StmList);
-        symbal_stack.push(BEGIN);
+        symbal_stack.push(LexType::END);
+        symbal_stack.push(LexType::StmList);
+        symbal_stack.push(LexType::BEGIN);
 
         /*注意，若没有声明部分，则弹出的是程序或过程根节点中指向
           声明部分的指针child[1];若有声明部分，则弹出的是语句序列前
@@ -762,7 +758,7 @@ void ParserLL1::process(int id)
 
         /*建立语句序列标识节点*/
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = newStmlNode();
+        current_treenode = TreeNode::newSpecNode(NodeKind::StmLK);
         (*t) = current_treenode;
         syntaxtree_stack.push(&(current_treenode->child[0]));
         break;
@@ -770,8 +766,8 @@ void ParserLL1::process(int id)
     }
     case 58 :
     {
-        symbal_stack.push(StmMore);
-        symbal_stack.push(Stm);
+        symbal_stack.push(LexType::StmMore);
+        symbal_stack.push(LexType::Stm);
         break;
     }
     case 59 :
@@ -782,16 +778,15 @@ void ParserLL1::process(int id)
 
     case 60 :
     {
-        symbal_stack.push(StmList);
-        symbal_stack.push(SEMI);
-
+        symbal_stack.push(LexType::StmList);
+        symbal_stack.push(LexType::SEMI);
         break;
     }
     case 61 :
     {
-        symbal_stack.push(ConditionalStm);
+        symbal_stack.push(LexType::ConditionalStm);
 
-        current_treenode = newStmtNode(IfK);
+        current_treenode = TreeNode::newStmtNode(StmtKind::IfK);
         //current_treenode->kind.stmt=;
 
         TreeNode** t = syntaxtree_stack.pop();
@@ -803,9 +798,9 @@ void ParserLL1::process(int id)
     }
     case 62 :
     {
-        symbal_stack.push(LoopStm);
+        symbal_stack.push(LexType::LoopStm);
 
-        current_treenode = newStmtNode(WhileK);
+        current_treenode = TreeNode::newStmtNode(StmtKind::WhileK);
         //current_treenode->kind.stmt=;
 
         TreeNode** t = syntaxtree_stack.pop();
@@ -817,10 +812,10 @@ void ParserLL1::process(int id)
 
     case 63 :
     {
-        symbal_stack.push(InputStm);
+        symbal_stack.push(LexType::InputStm);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = newStmtNode(ReadK);
+        current_treenode = TreeNode::newStmtNode(StmtKind::ReadK);
         //current_treenode->kind.stmt=;
         (*t) = current_treenode;
         syntaxtree_stack.push(&current_treenode->sibling);
@@ -829,10 +824,10 @@ void ParserLL1::process(int id)
     }
     case 64 :
     {
-        symbal_stack.push(OutputStm);
+        symbal_stack.push(LexType::OutputStm);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = newStmtNode(WriteK);
+        current_treenode = TreeNode::newStmtNode(StmtKind::WriteK);
         //current_treenode->kind.stmt=;
         (*t) = current_treenode;
         syntaxtree_stack.push(&current_treenode->sibling);
@@ -841,10 +836,10 @@ void ParserLL1::process(int id)
     }
     case 65 :
     {
-        symbal_stack.push(ReturnStm);
+        symbal_stack.push(LexType::ReturnStm);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = newStmtNode(ReturnK);
+        current_treenode = TreeNode::newStmtNode(StmtKind::ReturnK);
         //current_treenode->kind.stmt=;
         (*t) = current_treenode;
         syntaxtree_stack.push(&current_treenode->sibling);
@@ -854,13 +849,13 @@ void ParserLL1::process(int id)
 
     case 66 :
     {
-        symbal_stack.push(AssCall);
-        symbal_stack.push(ID);
+        symbal_stack.push(LexType::AssCall);
+        symbal_stack.push(LexType::ID);
 
-        current_treenode = newStmtNode(AssignK);
+        current_treenode = TreeNode::newStmtNode(StmtKind::AssignK);
 
         /*赋值语句左部变量节点*/
-        TreeNode*  t = newExpNode(VariK);
+        TreeNode* t = TreeNode::newExpNode(VariK);
         strcpy(t->name[0], head->getSem().toStdString().c_str());
         t->idnum++;
 
