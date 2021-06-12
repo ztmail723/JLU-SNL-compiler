@@ -7,14 +7,14 @@
 class TreeNode
 {
 public:
-    QVector<TreeNode*> child; // 指向子语法树结点指针
+    TreeNode* child[3]; // 指向子语法树结点指针
     TreeNode* sibling; // 指向兄弟语法树结点指针
     int lineno; // 记录源程序行号
     NodeKind nodekind; // 记录语法树的结点类型
     Kind kind; // 记录语法树结点的具体类型，为共用体结构
     int idnum; // 记录一个结点中标识符的个数
-    QVector<QString> name; // 结点中标识符的名字
-    QVector<Symbtable*> table; // 指针数组，数组成员是结点中各个标识符在符号表中的入口
+    QString name[10]; // 结点中标识符的名字
+    Symbtable* table[10]; // 指针数组，数组成员是结点中各个标识符在符号表中的入口
     QString type_name; // 记录类型名，当结点是声明类型，且类型是由类型标识符表示时有效
     struct
     {
