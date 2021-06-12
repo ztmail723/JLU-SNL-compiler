@@ -7,13 +7,8 @@ LexerImp::LexerImp()
 
 bool LexerImp::isKeyWord(QString str){
     //判断字符串是否为关键字
-    QMap<QString, LexType>::const_iterator it;
-    //保留字迭代器
-    for (it = ConstantVar::reservedWords.constBegin();
-         it != ConstantVar::reservedWords.constEnd(); ++it) {
-        if(str == it.key()){
-            return true;
-        }
+    if(ConstantVar::reservedWords.contains(str)){
+        return true;
     }
     return false;
 }
@@ -50,23 +45,20 @@ TokenList* LexerImp::run(QString str)
     /* 在下边实现 */
     int lineShow = 1;
     int strp = 0;//str的下标
-    QString temp = NULL;//记录保留字或者变量
-    int tempp = 0;//temp的下标（记录完整一个temp，并生成对应token后同temp清零）
+    QString temp;//记录保留字或者变量
     QChar c;
     while(strp <= str.length()){
         if((str[strp] >= "a" && str[strp] <= "z")
                 || (str[strp] >= "A" && str[strp] <= "Z")){
             //判断标识符和关键字
-            temp[tempp] = str[strp];
-            tempp++;
+            temp += str[strp];
             strp++;
 
             while(((str[strp] >= "a" && str[strp] <= "z")
                   || (str[strp] >= "A" && str[strp] <= "Z")
                   || (str[strp] >= "0" && str[strp] <= "9")) && strp <= str.length()){
 
-                temp[tempp] = str[strp];
-                tempp++;
+                temp += str[strp];
                 strp++;
             }
 
@@ -76,23 +68,18 @@ TokenList* LexerImp::run(QString str)
             }else {
                 tokenList = appendTokenList(tokenList, lineShow, getLexType("ID"), temp);
             }
-            temp = nullptr;
-            tempp = 0;
+            temp = "";
             continue;
         }
         if(str[strp] >= "0" && str[strp] <= "9"){
-            temp[tempp] = str[strp];
-            tempp++;
+            temp += str[strp];
             strp++;
             while(str[strp] >= "0" && str[strp] <= "9"){
-
-                temp[tempp] = str[strp];
-                tempp++;
+                temp += str[strp];
                 strp++;
             }
             tokenList = appendTokenList(tokenList, lineShow, getLexType("INTC_VAL"), temp);
-            temp = nullptr;
-            tempp = 0;
+            temp = "";
             continue;
         }
         if(str[strp] == "="){
