@@ -44,6 +44,10 @@ void MainWindow::on_pushButton_clicked() // 从文件中读取
     {
         fileNames = fileDialog->selectedFiles();
     }
+    if (fileNames.size() == 0)
+    {
+        return;
+    }
     QFile file(fileNames.back());
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray t = file.readAll();
