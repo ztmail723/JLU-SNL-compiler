@@ -47,7 +47,7 @@ TokenList* LexerImp::run(QString str)
     int strp = 0;//str的下标
     QString temp;//记录保留字或者变量
     QChar c;
-    while(strp <= str.length()){
+    while(strp < str.length()){
         if((str[strp] >= "a" && str[strp] <= "z")
                 || (str[strp] >= "A" && str[strp] <= "Z")){
             //判断标识符和关键字
@@ -56,7 +56,7 @@ TokenList* LexerImp::run(QString str)
 
             while(((str[strp] >= "a" && str[strp] <= "z")
                   || (str[strp] >= "A" && str[strp] <= "Z")
-                  || (str[strp] >= "0" && str[strp] <= "9")) && strp <= str.length()){
+                  || (str[strp] >= "0" && str[strp] <= "9")) && strp < str.length()){
 
                 temp += str[strp];
                 strp++;
@@ -74,7 +74,7 @@ TokenList* LexerImp::run(QString str)
         if(str[strp] >= "0" && str[strp] <= "9"){
             temp += str[strp];
             strp++;
-            while(str[strp] >= "0" && str[strp] <= "9"){
+            while((str[strp] >= "0" && str[strp] <= "9") && strp < str.length()){
                 temp += str[strp];
                 strp++;
             }
@@ -131,6 +131,7 @@ TokenList* LexerImp::run(QString str)
             continue;
         }
         if(str[strp] == "."){
+            if(strp + 1 >= str.length())break;
             if(str[strp + 1] == "."){
                 tokenList = appendTokenList(tokenList, lineShow, getLexType(".."), "-1");
                 strp += 2;
@@ -142,6 +143,7 @@ TokenList* LexerImp::run(QString str)
             continue;
         }
         if(str[strp] == ":"){
+            if(strp + 1 >= str.length())break;
             if(str[strp + 1] == "="){
                 tokenList = appendTokenList(tokenList, lineShow, getLexType(":="), "-1");
                 strp += 2;
