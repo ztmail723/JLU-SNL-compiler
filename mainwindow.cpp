@@ -5,6 +5,7 @@
 #include "lexerimp.h"
 #include "parserll1.h"
 #include "parserrecursivedescent.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -42,6 +43,10 @@ void MainWindow::on_pushButton_clicked() // 从文件中读取
     if (fileDialog->exec())
     {
         fileNames = fileDialog->selectedFiles();
+    }
+    if (fileNames.size() == 0)
+    {
+        return;
     }
     QFile file(fileNames.back());
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -109,19 +114,31 @@ void MainWindow::printParser() // 显示语法分析的结果
     QTreeWidgetItem* topItem = new QTreeWidgetItem(ui->treeWidget);
     QString str = ConstantVar::nodekindName[root->nodekind];
     topItem->setText(0, str);
-    for (auto i : root->child)
+    for (int i = 0; i < 3; i++)
     {
-        this->preOrder(i, topItem);
+        if (root->child[i] == nullptr)
+        {
+            continue;
+        }
+        this->preOrder(root->child[i], topItem);
     }
 }
 
 void MainWindow::preOrder(TreeNode* node, QTreeWidgetItem* parentItem)
 {
     QTreeWidgetItem* nowItem = new QTreeWidgetItem(parentItem);
+    if (node->sibling != nullptr)
+    {
+        this->preOrder(node->sibling, parentItem);
+    }
     QString str = ConstantVar::nodekindName[node->nodekind];
     nowItem->setText(0, str);
-    for (auto i : node->child)
+    for (int i = 0; i < 3; i++)
     {
-        this->preOrder(i, nowItem);
+        if (node->child[i] == nullptr)
+        {
+            continue;
+        }
+        this->preOrder(node->child[i], nowItem);
     }
 }
