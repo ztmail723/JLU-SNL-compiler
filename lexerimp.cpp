@@ -77,12 +77,14 @@ int LexerImp::getCharType(QChar c){
 QList<QString> LexerImp::pushString(QList<QString> strQueue, QString str){
     QString _str = str;
     strQueue.push_back(str);
+    //qDebug() << str;
     return strQueue;
 }
 
 TokenList* LexerImp::queueToList(TokenList* tokenList, QList<QString> strQueue){
     int lineShow = 1;
     while (!strQueue.isEmpty()) {
+        //qDebug() << strQueue.front();
         if(getCharType(strQueue.front()[0]) == 1){
             if(isKeyWord(strQueue.front())){
                 tokenList = appendTokenList(tokenList, lineShow, getLexType(strQueue.front()), "-1");
@@ -94,15 +96,15 @@ TokenList* LexerImp::queueToList(TokenList* tokenList, QList<QString> strQueue){
             tokenList = appendTokenList(tokenList, lineShow, getLexType("INTC_VAL"), strQueue.front());
         }
         if(getCharType(strQueue.front()[0]) == 3
-                || getCharType(strQueue.front()[0]) == 4
-                || getCharType(strQueue.front()[0]) == 5
-                || getCharType(strQueue.front()[0]) == 6){
+                || (getCharType(strQueue.front()[0]) == 4 && strQueue.front().size() == 1)
+                || (getCharType(strQueue.front()[0]) == 5 && getCharType(strQueue.front() != ":="))){
             tokenList = appendTokenList(tokenList, lineShow, getLexType(strQueue.front()), "-1");
         }
         if(strQueue.front() == ".." || strQueue.front() == ":="){
+            //qDebug() << "***" <<strQueue.front();
             tokenList = appendTokenList(tokenList, lineShow, getLexType(strQueue.front()), "-1");
         }
-        if(getCharType(strQueue.front()[0]) == 7)lineShow++;
+        if(getCharType(strQueue.front()[0]) == 6)lineShow++;
         strQueue.pop_front();
     }
     return tokenList;
@@ -219,8 +221,8 @@ TokenList* LexerImp::run1(QString str){
 //          6（“..”）数组下标界限状态
 //          7（“\n”）换行
 //          8（“:=”）赋值状态
-//          9结束状态
-
+//          9结束状态(分隔符)
+//          10结束状态（其他）
 TokenList* LexerImp::run(QString str)
 {
     TokenList* tokenList = new TokenList();
@@ -233,6 +235,7 @@ TokenList* LexerImp::run(QString str)
     while(strp < str.length()){
         c = str[strp];
         next = str[strp + 1];
+        charStack.push(c);
         switch (state) {
         case 0 :
             switch (getCharType(c)) {
@@ -242,54 +245,71 @@ TokenList* LexerImp::run(QString str)
             case 4 : state = 4; break;//“.”
             case 5 : state = 5; break;//“:”
             case 6 : state = 6; break;//“\n”
-            default: state = 9;
+            default: goto LS1;
             }
             break;
         case 1 :
             switch (getCharType(next)) {
             case 1 : state = 1; break;//字符型
             case 2 : state = 1; break;//字符型
-            default: state = 10;
+            default: goto LS2;
             }break;
         case 2 :
             switch (getCharType(next)) {
             case 2 : state = 2; break;//数字型
-            default: state = 9;
+            default: goto LS2;
             }break;
-        case 3 : state = 9;break;
+        case 3 : goto LS2;
         case 4 :
             switch (getCharType(next)) {
             case 4 : state = 7; break;//“..”
-            default: state = 9;//“”
+            default: goto LS2;//“”
             }break;
         case 5 :
             switch (getCharType(next)) {
             case 3 : if(next == "=")state = 8; break;//“:=”
-            default: state = 9;
+            default: goto LS2;
             }break;
         //判断：“:=”和“:”
-        case 6 : state = 9;break;
-        case 7 : state = 9;break;
+        case 6 : goto LS2;
+        case 7 : goto LS2;
         //判断：“..”和“.”
-        case 8 : state = 9;break;
+        case 8 : goto LS2;
+LS1:
         case 9 :
             temp = stackToString(charStack);
             charStack.clear();
+            //qDebug() << temp;
             strQuene = pushString(strQuene,temp);
             temp = "";
-            state = 0;
-            break;
+            switch (getCharType(next)) {
+            case 1 : state = 1; break;//字符型
+            case 2 : state = 2; break;//数字型
+            case 3 : state = 3; break;//单分隔符
+            case 4 : state = 4; break;//“.”
+            case 5 : state = 5; break;//“:”
+            case 6 : state = 6; break;//“\n”
+            default: state = 9;
+            }
+          break;
+LS2:
         case 10 :
             temp = stackToString(charStack);
             charStack.clear();
+            //qDebug() << temp;
             strQuene = pushString(strQuene,temp);
             temp = "";
-            state = 0;
+            switch (getCharType(next)) {
+            case 1 : state = 1; break;//字符型
+            case 2 : state = 2; break;//数字型
+            case 3 : state = 3; break;//单分隔符
+            case 4 : state = 4; break;//“.”
+            case 5 : state = 5; break;//“:”
+            case 6 : state = 6; break;//“\n”
+            default: state = 9;
+            }
             break;
         }
-        charStack.push(c);
-        TEST = stackToString(charStack);
-        qDebug() << TEST;
         strp++;
     }
     tokenList = queueToList(tokenList, strQuene);
