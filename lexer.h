@@ -1,6 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 #include "tokenlist.h"
+#include <QStack>
 
 class Lexer
 {

@@ -40,6 +40,15 @@ TokenList* LexerImp::appendTokenList(TokenList* tokenlist, int _lineShow, LexTyp
     //栈区读入元素，当栈区清空时，导致tokenlist出现错误
 }
 
+QString LexerImp::stackToString(QStack<QChar> charStack){
+    QString str = "";
+    while(!charStack.isEmpty()){
+        str += charStack.front();
+        charStack.pop_front();
+    }
+    return str;
+}
+
 int LexerImp::getCharType(QChar c){
     if((c >= "a" && c <= "z") || (c >= "A" && c <= "Z")){
         //判断标识符和关键字
@@ -48,7 +57,7 @@ int LexerImp::getCharType(QChar c){
     if(c >= "0" && c <= "9"){
         return 2;
     }
-    if(c == "<" || c == "+" || c == "-"
+    if(c == "=" || c == "<" || c == "+" || c == "-"
             || c == "*" || c == "/" || c == "(" || c == ")"
             || c == ";" || c == "," || c == "[" || c == "]"){
         return 3;
@@ -59,11 +68,8 @@ int LexerImp::getCharType(QChar c){
     if(c == ":"){
         return 5;
     }
-    if(c == "="){
-        return 6;
-    }
     if(c == "\n"){
-        return 7;
+        return 6;
     }
    return 0;
 }
@@ -218,62 +224,73 @@ TokenList* LexerImp::run1(QString str){
 TokenList* LexerImp::run(QString str)
 {
     TokenList* tokenList = new TokenList();
-    /* 在下边实现 */qDebug() <<"*****************";
     QList<QString> strQuene;
+    QStack<QChar> charStack;  //记录保留字或者变量
+    QString temp, TEST;
+    QChar c ,next;
     int strp = 0;       //str的下标
-    QString temp = "";  //记录保留字或者变量
     int state = 0;      //自动机状态
-    int flag = 0;       //清空字符串标志
     while(strp < str.length()){
-        if(flag == 1){
-            strQuene = pushString(strQuene, temp);
-            temp = "";
-            flag = 0;
-        }
+        c = str[strp];
+        next = str[strp + 1];
         switch (state) {
         case 0 :
-            switch (getCharType(str[strp])) {
-            case 1 : state = 1; break;
-            case 2 : state = 2; break;
-            case 3 : state = 3; break;
-            case 4 : state = 4; break;
-            case 5 : state = 5; break;
-            case 6 : state = 6; break;
-            case 7 : state = 7; break;
+            switch (getCharType(c)) {
+            case 1 : state = 1; break;//字符型
+            case 2 : state = 2; break;//数字型
+            case 3 : state = 3; break;//单分隔符
+            case 4 : state = 4; break;//“.”
+            case 5 : state = 5; break;//“:”
+            case 6 : state = 6; break;//“\n”
             default: state = 9;
             }
             break;
-        case 1 : state = 0;temp += str[strp];strp++;break;
-        case 2 : state = 0;temp += str[strp];strp++;break;
+        case 1 :
+            switch (getCharType(next)) {
+            case 1 : state = 1; break;//字符型
+            case 2 : state = 1; break;//字符型
+            default: state = 10;
+            }break;
+        case 2 :
+            switch (getCharType(next)) {
+            case 2 : state = 2; break;//数字型
+            default: state = 9;
+            }break;
         case 3 : state = 9;break;
-        case 4 : state = 8;flag = 1;break;//“.”
-        case 5 : state = 6;flag = 1;break;//“:”
+        case 4 :
+            switch (getCharType(next)) {
+            case 4 : state = 7; break;//“..”
+            default: state = 9;//“”
+            }break;
+        case 5 :
+            switch (getCharType(next)) {
+            case 3 : if(next == "=")state = 8; break;//“:=”
+            default: state = 9;
+            }break;
         //判断：“:=”和“:”
-        case 6 :
-            temp += str[strp];
-            strp++;
-            if(getCharType(str[strp]) == 6)temp += str[strp ];
-            flag = 1;
-            state = 0;
-            break;
+        case 6 : state = 9;break;
         case 7 : state = 9;break;
         //判断：“..”和“.”
-        case 8 :
-            temp += str[strp];
-            strp++;
-            if(getCharType(str[strp]) == 4)temp += str[strp];
-            flag = 1;
+        case 8 : state = 9;break;
+        case 9 :
+            temp = stackToString(charStack);
+            charStack.clear();
+            strQuene = pushString(strQuene,temp);
+            temp = "";
             state = 0;
             break;
-        case 9 :
-            strQuene = pushString(strQuene, temp);
+        case 10 :
+            temp = stackToString(charStack);
+            charStack.clear();
+            strQuene = pushString(strQuene,temp);
             temp = "";
-            temp += str[strp];
-            flag = 1;
             state = 0;
-            strp++;
             break;
         }
+        charStack.push(c);
+        TEST = stackToString(charStack);
+        qDebug() << TEST;
+        strp++;
     }
     tokenList = queueToList(tokenList, strQuene);
     return tokenList;

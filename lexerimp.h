@@ -1,8 +1,7 @@
 #ifndef LEXERIMP_H
 #define LEXERIMP_H
 
-#include "lexer.h"
-#include <QQueue>
+#include "lexer.h"]
 
 class LexerImp : public Lexer
 {
@@ -13,6 +12,7 @@ public:
     LexType getLexType(QString str);//获取str对应的LexType
     TokenList* appendTokenList(TokenList* tokenlist, int _lineShow, LexType _lex, QString _sem);
     int getCharType(QChar c);
+    QString stackToString(QStack<QChar> charStack);
     QList<QString> pushString(QList<QString> strQueue, QString str);
     TokenList* queueToList(TokenList* tokenList, QList<QString> strQueue);
     virtual TokenList* run(QString str) override;
