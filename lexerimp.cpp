@@ -131,24 +131,24 @@ TokenList* LexerImp::run(QString str)
             continue;
         }
         if(str[strp] == "."){
-            if(strp + 1 >= str.length())break;
-            if(str[strp + 1] == "."){
-                tokenList = appendTokenList(tokenList, lineShow, getLexType(".."), "-1");
-                strp += 2;
-                continue;
-            }
+            if(str + 1 < str.length())
+                if(str[strp + 1] == "." && str + 1 < str.length()){
+                    tokenList = appendTokenList(tokenList, lineShow, getLexType(".."), "-1");
+                    strp += 2;
+                    continue;
+                }
             c = str[strp];
             tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
             strp++;
             continue;
         }
         if(str[strp] == ":"){
-            if(strp + 1 >= str.length())break;
-            if(str[strp + 1] == "="){
-                tokenList = appendTokenList(tokenList, lineShow, getLexType(":="), "-1");
-                strp += 2;
-                continue;
-            }
+            if(strp + 1 < str.length())
+                if(str[strp + 1] == "="){
+                    tokenList = appendTokenList(tokenList, lineShow, getLexType(":="), "-1");
+                    strp += 2;
+                    continue;
+                }
             tokenList = appendTokenList(tokenList, lineShow, getLexType("COLON"), "-1");
             strp++;
             continue;
