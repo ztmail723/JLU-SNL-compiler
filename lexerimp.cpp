@@ -116,97 +116,142 @@ TokenList* LexerImp::run1(QString str){
     int lineShow = 1;
     int strp = 0;//str的下标
     QString temp;//记录保留字或者变量
-    QString last = "";
     QChar c;
     while(strp < str.length()){
-        if((last >= "a" && last <= "z")
-                || (last >= "A" && last <= "Z")){
+        if((str[strp] >= "a" && str[strp] <= "z")
+                || (str[strp] >= "A" && str[strp] <= "Z")){
             //判断标识符和关键字
-            temp += last;
-            if((str[strp] >= "a" && str[strp] <= "z")
-                    || (str[strp] >= "A" && str[strp] <= "Z")){
+            temp += str[strp];
+            strp++;
+
+            while(((str[strp] >= "a" && str[strp] <= "z")
+                  || (str[strp] >= "A" && str[strp] <= "Z")
+                  || (str[strp] >= "0" && str[strp] <= "9")) && strp < str.length()){
+
+                temp += str[strp];
+                strp++;
+            }
+
+            if (isKeyWord(temp)) {
+
+                tokenList = appendTokenList(tokenList, lineShow, getLexType(temp), "-1");
             }else {
-                if (isKeyWord(temp)) {
-                    tokenList = appendTokenList(tokenList, lineShow, getLexType(temp), "-1");
-                }else {
-                    tokenList = appendTokenList(tokenList, lineShow, getLexType("ID"), temp);
+                tokenList = appendTokenList(tokenList, lineShow, getLexType("ID"), temp);
+            }
+            temp = "";
+            continue;
+        }
+        if(str[strp] >= "0" && str[strp] <= "9"){
+            temp += str[strp];
+            strp++;
+            while((str[strp] >= "0" && str[strp] <= "9") && strp < str.length()){
+                temp += str[strp];
+                strp++;
+            }
+            tokenList = appendTokenList(tokenList, lineShow, getLexType("INTC_VAL"), temp);
+            temp = "";
+            continue;
+        }
+        if(str[strp] == "="){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "<"){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "+"){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "-"){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "*"){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "/"){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "("){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == ")"){
+            c = str[strp];
+            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == "."){
+            if(str + 1 < str.length())
+                if(str[strp + 1] == "." && str + 1 < str.length()){
+                    tokenList = appendTokenList(tokenList, lineShow, getLexType(".."), "-1");
+                    strp += 2;
+                    continue;
                 }
-                temp = "";
-            }
-        }
-        if(last >= "0" && last <= "9"){
-            temp += last;
-            if(str[strp] < "0" && str[strp] > "9"){
-                tokenList = appendTokenList(tokenList, lineShow, getLexType("INTC_VAL"), temp);
-                temp = "";
-            }
-        }
-        if(last == "="){
-            c = last[0];
+            c = str[strp];
             tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
         }
-        if(last == "<"){
-            c = last[0];
+        if(str[strp] == ":"){
+            if(strp + 1 < str.length())
+                if(str[strp + 1] == "="){
+                    tokenList = appendTokenList(tokenList, lineShow, getLexType(":="), "-1");
+                    strp += 2;
+                    continue;
+                }
+            tokenList = appendTokenList(tokenList, lineShow, getLexType("COLON"), "-1");
+            strp++;
+            continue;
+        }
+        if(str[strp] == ";"){
+            c = str[strp];
             tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
         }
-        if(last == "+"){
-            c = last[0];
+        if(str[strp] == ","){
+            c = str[strp];
             tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
         }
-        if(last == "-"){
-            c = last[0];
+        if(str[strp] == "["){
+            c = str[strp];
             tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
         }
-        if(last == "*"){
-            c = last[0];
+        if(str[strp] == "]"){
+            c = str[strp];
             tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
+            strp++;
+            continue;
         }
-        if(last == "/"){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == "("){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == ")"){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == "."){
-            c = last[0];
-            if(str[strp] == "."){
-                tokenList = appendTokenList(tokenList, lineShow, getLexType(".."), "-1");
-            }
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == ":"){
-            c = last[0];
-            if(str[strp] == "="){
-                tokenList = appendTokenList(tokenList, lineShow, getLexType(":="), "-1");
-            }
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == ";"){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == ","){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == "["){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == "]"){
-            c = last[0];
-            tokenList = appendTokenList(tokenList, lineShow, getLexType(c), "-1");
-        }
-        if(last == "\n"){
+        if(str[strp] == "\n"){
             lineShow++;
+            strp++;
+            continue;
         }
-        last = str[strp];
         strp++;
     }
     return tokenList;
