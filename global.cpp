@@ -63,3 +63,43 @@ QMap<NodeKind, QString> ConstantVar::nodekindName = {{NodeKind::ProK, "ProK"},
     {NodeKind::StmtK, "StmtK"},
     {NodeKind::ExpK, "ExpK"}
 };
+
+std::set<LexType> ConstantVar::TTSet =
+{
+    // 簿记单词符号
+    LexType::ENDFILE,   LexType::ERROR,
+    // 保留字
+    LexType::PROGRAM,   LexType::PROCEDURE, LexType::TYPE,  LexType::VAR,       LexType::IF,
+    LexType::THEN,      LexType::ELSE,      LexType::FI,        LexType::WHILE,     LexType::DO,
+    LexType::ENDWH,     LexType::BEGIN,     LexType::END,   LexType::READ,      LexType::WRITE,
+    LexType::ARRAY,     LexType::OF,        LexType::RECORD,    LexType::RETURN,
+    LexType::INTEGER_T, LexType::CHAR_T,
+    // 多字符单词符号
+    LexType::ID,        LexType::INTC_VAL,      LexType::CHARC_VAL,
+    // 特殊符号
+    LexType::ASSIGN,        LexType::EQ,        LexType::LT,        LexType::PLUS,      LexType::MINUS,
+    LexType::TIMES, LexType::DIVIDE,        LexType::LPAREN,    LexType::RPAREN,        LexType::DOT,
+    LexType::COLON,     LexType::SEMI,      LexType::COMMA, LexType::LMIDPAREN, LexType::RMIDPAREN,
+    LexType::UNDERANGE
+};
+std::set<LexType> ConstantVar::NTSet =
+{
+    LexType::Program,         LexType::ProgramHead,     LexType::ProgramName,   LexType::DeclarePart,
+    LexType::TypeDec,        LexType::TypeDeclaration,  LexType::TypeDecList,   LexType::TypeDecMore,
+    LexType::TypeId,          LexType::TypeName,            LexType::BaseType,      LexType::StructureType,
+    LexType::ArrayType,      LexType::Low,              LexType::Top,            LexType::RecType,
+    LexType::FieldDecList,   LexType::FieldDecMore,     LexType::IdList,            LexType::IdMore,
+    LexType::VarDec,          LexType::VarDeclaration,  LexType::VarDecList,        LexType::VarDecMore,
+    LexType::VarIdList,   LexType::VarIdMore,       LexType::ProcDec,       LexType::ProcDeclaration,
+    LexType::ProcDecMore,    LexType::ProcName,         LexType::ParamList,     LexType::ParamDecList,
+    LexType::ParamMore,      LexType::Param,            LexType::FormList,      LexType::FidMore,
+    LexType::ProcDecPart,    LexType::ProcBody,         LexType::ProgramBody,   LexType::StmList,
+    LexType::StmMore,        LexType::Stm,              LexType::AssCall,       LexType::AssignmentRest,
+    LexType::ConditionalStm, LexType::StmL,             LexType::LoopStm,       LexType::InputStm,
+    LexType::InVar,          LexType::OutputStm,        LexType::ReturnStm,     LexType::CallStmRest,
+    LexType::ActParamList,   LexType::ActParamMore,     LexType::RelExp,            LexType::OtherRelE,
+    LexType::Exp,             LexType::OtherTerm,       LexType::Term,           LexType::OtherFactor,
+    LexType::Factor,         LexType::Variable,         LexType::VariMore,      LexType::FieldVar,
+    LexType::FieldVarMore,   LexType::CmpOp,            LexType::AddOp,          LexType::MultOp
+};
+

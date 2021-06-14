@@ -5,6 +5,12 @@ Token::Token()
 
 }
 
+Token::Token(int _lineshow, LexType _lex, QString _sem){
+    this->lineShow = _lineshow;
+    this->lex = _lex;
+    this->sem = _sem;
+}
+
 void Token::setLineShow(int lineShow)
 {
     this->lineShow = lineShow;
