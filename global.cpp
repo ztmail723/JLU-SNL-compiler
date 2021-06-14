@@ -1,5 +1,6 @@
 #include "global.h"
-QMap<LexType, QString> ConstantVar::lexName = { { LexType::PROGRAM, "PROGRAM" },
+QMap<LexType, QString> ConstantVar::lexName = {
+    { LexType::PROGRAM, "PROGRAM" },
     { LexType::TYPE, "TYPE" }, { LexType::VAR, "VAR" },
     { LexType::PROCEDURE, "PROCEDURE" }, { LexType::BEGIN, "BEGIN" },
     { LexType::END, "END" }, { LexType::ARRAY, "ARRAY" },
@@ -22,7 +23,8 @@ QMap<LexType, QString> ConstantVar::lexName = { { LexType::PROGRAM, "PROGRAM" },
     { LexType::UNDERANGE, ".." }, { LexType::ENDFILE, "EOF" },
     { LexType::ERROR, "ERROR" }
 };
-QMap<QString, LexType> ConstantVar::reservedWords = { { "program", LexType::PROGRAM },
+QMap<QString, LexType> ConstantVar::reservedWords = {
+    { "program", LexType::PROGRAM },
     { "type", LexType::TYPE },
     { "var", LexType::VAR },
     { "procedure", LexType::PROCEDURE },
@@ -44,7 +46,8 @@ QMap<QString, LexType> ConstantVar::reservedWords = { { "program", LexType::PROG
     { "return", LexType::RETURN },
     { "integer", LexType::INTEGER_T }
 };
-QMap<char, LexType> ConstantVar::opWords = { { '+', LexType::PLUS }, { '-', LexType::MINUS }, { '*', LexType::TIMES },
+QMap<char, LexType> ConstantVar::opWords = {
+    { '+', LexType::PLUS }, { '-', LexType::MINUS }, { '*', LexType::TIMES },
     { '/', LexType::DIVIDE }, { '(', LexType::LPAREN }, { ')', LexType::RPAREN },
     { ';', LexType::SEMI }, { '[', LexType::LMIDPAREN }, { ']', LexType::RMIDPAREN },
     { '=', LexType::EQ }, { '<', LexType::LT }, { ',', LexType::COMMA },
