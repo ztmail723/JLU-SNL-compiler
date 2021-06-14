@@ -132,6 +132,24 @@ void MainWindow::preOrder(TreeNode* node, QTreeWidgetItem* parentItem)
         this->preOrder(node->sibling, parentItem);
     }
     QString str = ConstantVar::nodekindName[node->nodekind];
+
+    // 以下用于显示标识符
+    for (int i = 0; i < 10; i++)
+    {
+        if (node->name[i] != "")
+        {
+            if (i != 0)
+            {
+                str += ",";
+            }
+            else
+            {
+                str += ":";
+            }
+            str += node->name[i];
+        }
+    }
+
     nowItem->setText(0, str);
     for (int i = 0; i < 3; i++)
     {
