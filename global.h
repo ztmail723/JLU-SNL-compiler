@@ -192,10 +192,10 @@ struct Symbtable;
 
 namespace ConstantVar
 {
-extern QMap<LexType, QString> lexName;
-extern QMap<QString, LexType> reservedWords;
-extern QMap<char, LexType> opWords;
-extern QMap<NodeKind, QString> nodekindName;
+    extern QMap<LexType, QString> lexName;
+    extern QMap<QString, LexType> reservedWords;
+    extern QMap<char, LexType> opWords;
+    extern QMap<NodeKind, QString> nodekindName;
 }
 
 #endif // GLOBAL_H
