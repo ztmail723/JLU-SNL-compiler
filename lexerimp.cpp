@@ -266,8 +266,7 @@ TokenList* LexerImp::run1(QString str){
 //          6（“..”）数组下标界限状态
 //          7（“\n”）换行
 //          8（“:=”）赋值状态
-//          9结束状态(分隔符)
-//          10结束状态（其他）
+//          9结束状态
 TokenList* LexerImp::run(QString str)
 {
     TokenList* tokenList = new TokenList();
@@ -297,48 +296,31 @@ TokenList* LexerImp::run(QString str)
             switch (getCharType(next)) {
             case 1 : state = 1; break;//字符型
             case 2 : state = 1; break;//字符型
-            default: goto LS2;
+            default: goto LS1;
             }break;
         case 2 :
             switch (getCharType(next)) {
             case 2 : state = 2; break;//数字型
-            default: goto LS2;
+            default: goto LS1;
             }break;
-        case 3 : goto LS2;
+        case 3 : goto LS1;
         case 4 :
             switch (getCharType(next)) {
             case 4 : state = 7; break;//“..”
-            default: goto LS2;//“”
+            default: goto LS1;//“”
             }break;
         case 5 :
             switch (getCharType(next)) {
             case 3 : if(next == "=")state = 8; break;//“:=”
-            default: goto LS2;
+            default: goto LS1;
             }break;
         //判断：“:=”和“:”
-        case 6 : goto LS2;
-        case 7 : goto LS2;
+        case 6 : goto LS1;
+        case 7 : goto LS1;
         //判断：“..”和“.”
-        case 8 : goto LS2;
+        case 8 : goto LS1;
 LS1:
         case 9 :
-            temp = stackToString(charStack);
-            charStack.clear();
-            //qDebug() << temp;
-            strQuene = pushString(strQuene,temp);
-            temp = "";
-            switch (getCharType(next)) {
-            case 1 : state = 1; break;//字符型
-            case 2 : state = 2; break;//数字型
-            case 3 : state = 3; break;//单分隔符
-            case 4 : state = 4; break;//“.”
-            case 5 : state = 5; break;//“:”
-            case 6 : state = 6; break;//“\n”
-            default: state = 9;
-            }
-          break;
-LS2:
-        case 10 :
             temp = stackToString(charStack);
             charStack.clear();
             //qDebug() << temp;
