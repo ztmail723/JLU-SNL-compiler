@@ -40,6 +40,10 @@ public:
             ExpType type; // 记录语法树结点的检查类型，取值Void, Integer, Boolean, 为类型检查ExpType类型
         } ExpAttr; // 记录表达式的属性
     } attr;
+
+public:
+    TreeNode() {}
+    TreeNode(NodeKind nodekind, int lineno);
     ~TreeNode();
 };
 
