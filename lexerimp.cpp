@@ -278,7 +278,12 @@ TokenList* LexerImp::run(QString str)
     int state = 0;      //自动机状态
     while(strp < str.length()){
         c = str[strp];
-        next = str[strp + 1];
+        if( strp + 1 >= str.length()){
+            next = '\0';
+        }
+        else {
+            next = str[strp + 1];
+        }
         charStack.push(c);
         switch (state) {
         case 0 :
