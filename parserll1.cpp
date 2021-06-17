@@ -312,14 +312,11 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
             auto iter = table.find(QPair<LexType, LexType>(ss, tokenList[head].getLexType()));
             if (table.cend() != iter)
             {
-                //qDebug() << "iterVal=" << iter.value() << " size " << syntaxtree_stack.size();
                 this->process(iter.value(), tokenList);
-                //qDebug() << syntaxtree_stack.size();
             }
             else
             {
-                qDebug() << "i don't understand the :" << ConstantVar::lexName[tokenList[head].getLexType()] << "in this line:" << ParserLL1::nowLine;
-                //TODO not in table
+                qDebug() << "语法分析错误:" << ConstantVar::lexName[tokenList[head].getLexType()] << "行数：" << ParserLL1::nowLine;
             }
             continue;
         }
@@ -333,9 +330,8 @@ SyntaxTree* ParserLL1::run(TokenList tokenList)
             }
             else
             {
-                qDebug() << "unexpected token:" << ConstantVar::lexName[tokenList[head].getLexType()] << " in line " << ParserLL1::nowLine; //TODO ERROR not match
+                qDebug() << "语法分析错误：" << ConstantVar::lexName[tokenList[head].getLexType()] << "行数：" << ParserLL1::nowLine; //TODO ERROR not match
                 head++;
-                //TODO error handing : just jump over
             }
             continue;
         }
