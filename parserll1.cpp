@@ -559,15 +559,15 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::ArrayType);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = ParserLL1::newSpecNode(NodeKind::DecK); /*生成记录类型的下一个域，不添任何信息*/
-        (*t) = current_treenode; /*若是第一个，则是record类型的子结点指向当前结点，否则，是上一个纪录域声明的兄弟结点*/
+        current_treenode = ParserLL1::newSpecNode(NodeKind::DecK); // 生成记录类型的下一个域，不添任何信息
+        (*t) = current_treenode; // 若是第一个，则是record类型的子结点指向当前结点，否则，是上一个纪录域声明的兄弟结点
         syntaxtree_stack.push(&((*current_treenode).sibling));
 
         break;
     }
     case 25:
     {
-        /*后面没有记录类型的下一个域了，恢复当前纪录类型节点的指针*/
+        // 后面没有记录类型的下一个域了，恢复当前纪录类型节点的指针
         syntaxtree_stack.pop();
         current_treenode = saveP;
         break;
@@ -583,7 +583,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::IdMore);
         symbal_stack.push(LexType::ID);
 
-        /*纪录一个域中各个变量的语义信息*/
+        // 纪录一个域中各个变量的语义信息
         current_treenode->name[current_treenode->idnum] = tokenList[head].getSem();
         current_treenode->idnum++;
         break;
@@ -616,11 +616,11 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::VarDecList);
         symbal_stack.push(LexType::VAR);
 
-        current_treenode = ParserLL1::newSpecNode(NodeKind::VarK); /*生成一个标志变量声明的节点*/
+        current_treenode = ParserLL1::newSpecNode(NodeKind::VarK); // 生成一个标志变量声明的节点
         TreeNode** t = syntaxtree_stack.pop();
         (*t) = current_treenode;
-        syntaxtree_stack.push(&((*current_treenode).sibling)); /*压入指向函数声明的指针*/
-        syntaxtree_stack.push(&((*current_treenode).child[0])); /*压入指向第一个变量声明节点的指针*/
+        syntaxtree_stack.push(&((*current_treenode).sibling)); // 压入指向函数声明的指针
+        syntaxtree_stack.push(&((*current_treenode).child[0])); // 压入指向第一个变量声明节点的指针
 
         break;
     }
@@ -632,8 +632,8 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::TypeName);
 
         TreeNode** t = syntaxtree_stack.pop();
-        current_treenode = ParserLL1::newSpecNode(NodeKind::DecK); /*建立一个新的声明节点，这里表示变量声明*/
-        (*t) = current_treenode; /*若是第一个节点，则变量声明的头指针指向它，否则它是前一个变量声明的后继*/
+        current_treenode = ParserLL1::newSpecNode(NodeKind::DecK); // 建立一个新的声明节点，这里表示变量声明
+        (*t) = current_treenode; // 若是第一个节点，则变量声明的头指针指向它，否则它是前一个变量声明的后继
         syntaxtree_stack.push(&((*current_treenode).sibling));
 
         break;
@@ -698,16 +698,14 @@ void ParserLL1::process(int id, TokenList& tokenList)
         (*t) = current_treenode;
 
         syntaxtree_stack.push(&(current_treenode->sibling));
-        syntaxtree_stack.push(&(current_treenode->child[2])); /*指向语句序列*/
-        syntaxtree_stack.push(&(current_treenode->child[1])); /*指向函数的声明部分*/
-        syntaxtree_stack.push(&(current_treenode->child[0])); /*指向参数声明部分*/
+        syntaxtree_stack.push(&(current_treenode->child[2])); // 语句序列
+        syntaxtree_stack.push(&(current_treenode->child[1])); // 函数的声明部分
+        syntaxtree_stack.push(&(current_treenode->child[0])); // 指向参数声明
         break;
     }
 
     case 42:
     {
-        /*弹出过程节点的兄弟节点指针*/
-        //syntaxtree_stack.pop();  /*为了统一处理，不能现在弹出*/
         break;
     }
 
@@ -763,7 +761,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
 
         TreeNode** t = syntaxtree_stack.pop();
         current_treenode = ParserLL1::newSpecNode(NodeKind::DecK);
-        /*函数的参数类型是值类型*/
+        // 函数的参数类型是值类型
         current_treenode->attr.ProcAttr.paramt = ParamType::valparamType;
         (*t) = current_treenode;
         syntaxtree_stack.push(&(current_treenode->sibling));
@@ -778,7 +776,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
 
         TreeNode** t = syntaxtree_stack.pop();
         current_treenode = ParserLL1::newSpecNode(NodeKind::DecK);
-        /*函数的参数类型是变量类型*/
+        // 函数的参数类型是变量类型
         current_treenode->attr.ProcAttr.paramt = ParamType::varparamType;
         (*t) = current_treenode;
         syntaxtree_stack.push(&(current_treenode->sibling));
@@ -900,7 +898,6 @@ void ParserLL1::process(int id, TokenList& tokenList)
 
         TreeNode** t = syntaxtree_stack.pop();
         current_treenode = ParserLL1::newStmtNode(StmtKind::WriteK);
-        //current_treenode->kind.stmt=;
         (*t) = current_treenode;
         syntaxtree_stack.push(&current_treenode->sibling);
 
@@ -912,7 +909,6 @@ void ParserLL1::process(int id, TokenList& tokenList)
 
         TreeNode** t = syntaxtree_stack.pop();
         current_treenode = ParserLL1::newStmtNode(StmtKind::ReturnK);
-        //current_treenode->kind.stmt=;
         (*t) = current_treenode;
         syntaxtree_stack.push(&current_treenode->sibling);
 
@@ -1075,8 +1071,6 @@ void ParserLL1::process(int id, TokenList& tokenList)
         syntaxtree_stack.push(&(current_treenode->sibling));
         break;
     }
-
-    /*********************表达式部分************************/
 
     case 81:
     {
@@ -1270,7 +1264,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
         current_treenode = ParserLL1::newExpNode(ExpKind::VariK);
         current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
-        /*变量节点入操作数栈*/
+        // 变量节点入操作数栈
         num_stack.push(current_treenode);
 
         break;
@@ -1278,7 +1272,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
 
     case 93:
     {
-        /*标识符变量*/
+        // 标识符变量
         current_treenode->attr.ExpAttr.varkind = VarKind::IdV;
         break;
     }
@@ -1288,7 +1282,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::RMIDPAREN);
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::LMIDPAREN);
-        /*数组成员变量*/
+        // 数组成员变量
         current_treenode->attr.ExpAttr.varkind = VarKind::ArrayMembV;
         syntaxtree_stack.push(&current_treenode->child[0]);
 
@@ -1309,7 +1303,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
     {
         symbal_stack.push(LexType::FieldVar);
         symbal_stack.push(LexType::DOT);
-        /*域成员变量*/
+        // 域成员变量
         current_treenode->attr.ExpAttr.varkind = VarKind::FieldMembV;
         syntaxtree_stack.push(&current_treenode->child[0]);
         break;
@@ -1320,7 +1314,7 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::FieldVarMore);
         symbal_stack.push(LexType::ID);
 
-        /*纪录域的成员*/
+        // 纪录域的成员
         current_treenode = ParserLL1::newExpNode(ExpKind::VariK);
         current_treenode->name[0] = tokenList[head].getSem();
         current_treenode->idnum++;
@@ -1343,12 +1337,12 @@ void ParserLL1::process(int id, TokenList& tokenList)
         symbal_stack.push(LexType::RMIDPAREN);
         symbal_stack.push(LexType::Exp);
         symbal_stack.push(LexType::LMIDPAREN);
-        /*域成员是数组变量*/
+        // 域成员是数组变量
         current_treenode->attr.ExpAttr.varkind = VarKind::ArrayMembV;
-        /*指向数组成员表达式*/
+        // 指向数组成员表达式
         syntaxtree_stack.push(&current_treenode->child[0]);
 
-        //操作符栈的栈底存入一个特殊的操作符作为标志
+        // 操作符栈的栈底存入一个特殊的操作符作为标志
         TreeNode* t = ParserLL1::newExpNode(ExpKind::OpK);
         t->attr.ExpAttr.op = LexType::END;
         op_stack.push(t);
