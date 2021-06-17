@@ -305,6 +305,7 @@ TokenList* LexerImp::run(QString str)
             }break;
         case 2 :
             switch (getCharType(next)) {
+            case 1 : qDebug() << "ERROR： Nonstandard identifier！";break;
             case 2 : state = 2; break;//数字型
             default: goto LS1;
             }break;
